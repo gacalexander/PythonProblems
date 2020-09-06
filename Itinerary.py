@@ -1,6 +1,12 @@
 segments = [("JFK", "DEN"), ("LAX", "ORD"), ("DEN", "SFO"), ("LAS", "LAX"), ("ORD", "ATL"), ("ATL", "JFK"), ("SFO", "LAS")]
 start = "JFK"
 
+def find_dest(segs, origin):
+    assert type(origin) is str
+    assert type(segs) is list
+    dest = [item[1] for item in segs if item[0] == origin]
+    return ' ' .join(dest)
+
 def get_route(path, origin):
     orig_start = origin
     itinerary_list = []
