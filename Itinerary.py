@@ -1,6 +1,7 @@
 
 
 
+
 '''
 Exercise 3 (3 points). Now write a function get_route(segs, origin) that traces the complete itinerary of the pilot, given her first port of origin. Assume that the destination for a flight is the same as the origin for the next flight. The itinerary is completed when he arrives back at the starting port of origin. For example, if the starting port is "JFK", your function should return the list: ["JFK", "DEN", "SFO", "LAS", "LAX", "ORD", "ATL"].
 '''
@@ -13,25 +14,36 @@ def get_route(path, origin):
 
     
     startSeg = [i[0] for i in segments]
+
     endSeg = [i[1] for i in segments]
 
     startPath = origin
+    endPath = ""
     
     itinerary_list =[]
-    endPath == ""      
-        
     while endPath != origin :
 
-        endPath == ""      
+        endPath == ""
         
         try:
 
+            
             startSegIndex = startSeg.index(startPath)
+
             endPath = endSeg[startSegIndex]
+
             itinerary_list.append(startPath)
             startPath = endPath
+
         except:
             return "No valid path"
+        
+       
+        
+    
+
+        
+
     return itinerary_list
 
 
@@ -52,7 +64,7 @@ for p in starting_port:
      assert itinerary[0] == p, "incorrect port of origin for the itinerary"
      for i, port in enumerate(itinerary[:-1]):
          dest = find_dest(segments, port)
-         print(dest)
          assert dest == itinerary[i+1], "incorrect itinerary"
 print("\n(Passed.)")
+
 
