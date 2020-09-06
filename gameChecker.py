@@ -1,3 +1,5 @@
+
+
 def check_ttt(game):
     assert len(game) ==3
     
@@ -57,7 +59,46 @@ def check_ttt(game):
             pass
 
 
+    return "No Result"
 
+import random
+import numpy as np
+
+
+def test_check_ttt():
+    test_game_random = [[0,0,0] for elem in range(3)]
+    boxes_filled = random.randint(0,8)
+    num_circles = int(boxes_filled/2)
+
+    circle_ind = random.sample(range(9),num_circles)
+    cross_ind = random.sample([elem for elem in range(9) if elem not in circle_ind],(boxes_filled-num_circles))        
+
+    for elem in circle_ind: test_game_random[int(elem/3)][elem%3] = 1
+    for elem in cross_ind: test_game_random[int(elem/3)][elem%3] = -1
+    print(np.array(test_game_random))
+    print("\nYour Result: {}".format(check_ttt(test_game_random)))
+
+    your_answer = check_ttt(test_game_random)
+    if 3 in np.sum(test_game_random,axis=0) and -3 in np.sum(test_game_random,axis=0): pass
+    elif 3 in np.sum(test_game_random,axis=1) and -3 in np.sum(test_game_random,axis=1): pass
+    elif 3 in np.sum(test_game_random,axis=0) and -3 in np.sum(test_game_random,axis=1): pass
+    elif 3 in np.sum(test_game_random,axis=1) and -3 in np.sum(test_game_random,axis=0): pass
+    elif 3 in np.sum(test_game_random,axis=0): assert your_answer == "Circles (+1) Win"
+    elif -3 in np.sum(test_game_random,axis=0): assert your_answer == "Crosses (-1) Win"
+    elif 3 in np.sum(test_game_random,axis=1): assert your_answer == "Circles (+1) Win"
+    elif -3 in np.sum(test_game_random,axis=1): assert your_answer == "Crosses (-1) Win"
+    elif np.trace(test_game_random) == 3: assert your_answer == "Circles (+1) Win"
+    elif np.trace(test_game_random) == -3: assert your_answer == "Crosses (-1) Win"
+    elif np.flipud(test_game_random).trace() == 3: assert your_answer == "Circles (+1) Win"
+    elif np.flipud(test_game_random).trace() == -3: assert your_answer == "Crosses (-1) Win"
+    else: assert check_ttt(test_game_random) == "No Result"
+
+print("testing function for random game states..")
+for i in range(20):
+    print("---------- Game State {} ----------".format(i))
+    test_check_ttt()
+
+print("\n(Passed!)")
 
 
 # Test cell: test_cell_part0
