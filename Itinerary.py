@@ -13,37 +13,22 @@ def get_route(path, origin):
 
     
     startSeg = [i[0] for i in segments]
-    print("22" , startSeg)
     endSeg = [i[1] for i in segments]
-    print("22" , endSeg)
+
     startPath = origin
-    endPath = ""
     
     itinerary_list =[]
     while endPath != origin :
 
-        endPath == ""
-        
+        endPath == ""      
         try:
-            print("startPath", startPath)
-            print("endPath" ,endPath)
-            
+
             startSegIndex = startSeg.index(startPath)
-            print("startSegIndex" , startSegIndex)
             endPath = endSeg[startSegIndex]
-            print("endPath" , endPath)
             itinerary_list.append(startPath)
             startPath = endPath
-            print("27" , itinerary_list)
         except:
             return "No valid path"
-        
-       
-        
-    
-
-        
-
     return itinerary_list
 
 
