@@ -1,9 +1,8 @@
 def count_pairs(items):
     item_pair = []
     # item_pair = [(items[i], items[j]) for i in range(len(items)) for j in range(i + 1, len(items))]
-    item_pair = [(items[i], items[j] ) for i in range(len(items)) for j in range(i+1, len(items)) if items[j] == items[i] + 1 ]
-    print(item_pair)
-    return len(item_pair)
+
+    return len([(items[i], items[j] ) for i in range(len(items)) for j in range(i+1, len(items)) if items[j] == items[i] + 1 ])
 
 print(count_pairs([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 
