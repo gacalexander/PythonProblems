@@ -18,9 +18,12 @@ def get_route(path, origin):
     startPath = origin
     
     itinerary_list =[]
+    endPath == ""      
+        
     while endPath != origin :
 
         endPath == ""      
+        
         try:
 
             startSegIndex = startSeg.index(startPath)
