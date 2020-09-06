@@ -5,7 +5,17 @@ def count_pairs(items):
     item_pair = []
     # item_pair = [(items[i], items[j]) for i in range(len(items)) for j in range(i + 1, len(items))]
 
-    return len([(items[i], items[j] ) for i in range(len(items)) for j in range(i+1, len(items)) if items[j] == items[i] + 1 ])
+    items.sort()
+    return_pair=[]
+    lengthItems = len(items)
+    for i in range(lengthItems):
+        for j in range(i+1, lengthItems):
+            if items[j] > items[i] +2 :
+                break;
+            if items[j] == items[i] +1:
+                return_pair.append((items[i],items[j]))
+            
+    return len(return_pair)
 
 print(count_pairs([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 
