@@ -1,3 +1,4 @@
+'''
 Exercise 0 (10 points). Given a list of integers, find the number of pairs that are consecutive.
 
 For example, given the list, [1, 2, 5, 8]:
@@ -11,15 +12,11 @@ The first test case below tests for the correctness of the solution whereas the 
 Application note. Although this might seem like a toy problem to solve, its application forms the basis of pattern recognition. For example, suppose you are trying to discover the buying pattern of products in a supermarket and want to figure out if placing two products next to each other impact each others' sales. (Does placing milk next to cereal drive both their sales upwards? Or if placing Muesli next to Cereal will lead to additional Muesli sales, since people who buy cereal would anyway buy Milk even if it is in the other corner of the store?)
 
 In mapping that concrete placement problem into this abstract analysis problem, you can think of the list of numbers as the shelf numbers of products in a receipt, and you are trying to find out the number of cases where the products were in adjacent shelves.
+'''
+def count_pairs(items):    
+    return len([(i, j) for i in items for j in items[i:] if j == i+1 ])
 
-def all_pairs(items):
-    item_pair = []
-    # item_pair = [(items[i], items[j]) for i in range(len(items)) for j in range(i + 1, len(items))]
-    item_pair = [(items[i], items[j]) for i in items for j in items[i+1:l]]
-    print(item_pair)
-    return len(item_pair)
-
-print(all_pairs([1, 2, 3, 4, 5, 6, 7, 8, 9]))
+print(count_pairs([1, 2, 3, 4, 5, 6, 7, 8, 9]))
 
 # Test cell: Test_Code1
 
@@ -28,8 +25,8 @@ def test_code1():
     L2 = [1, 1, 1, 2, 2, 3, 4, 10]
     L3 = [1, 4, 7, 9]
     L4 = []
-    # assert count_pairs(L1) == 8, "Test Case L1 failed"
-    # assert count_pairs(L2) == 9, "Test Case L2 failed"
+    assert count_pairs(L1) == 8, "Test Case L1 failed"
+    assert count_pairs(L2) == 9, "Test Case L2 failed"
     # assert count_pairs(L3) == 0, "Test Case L3 failed"
     # assert count_pairs(L4) == 0, "Test Case L4 failed"
     print("\n(Passed!)")
