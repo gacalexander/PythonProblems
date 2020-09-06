@@ -1,3 +1,6 @@
+import numpy as np
+import CPSol as cp
+
 def count_pairs(items):
     item_pair = []
     # item_pair = [(items[i], items[j]) for i in range(len(items)) for j in range(i + 1, len(items))]
