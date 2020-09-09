@@ -87,18 +87,16 @@ def is_binary(x):
 
 def eval_strfrac(s, base=2):
     assert is_valid_strfrac(s, base), "'{}' contains invalid digits for a base-{} number.".format(s, base)
-    separated = s.split(".")
-    dot_position = len(separated[1]) if len(separated) > 1 else 0 #Has decimal
-    print(separated[0])
-    if is_binary(separated[0]) or separated[0].isalpha():
-        merged = "".join(separated)
-        divisor = base ** dot_position
-        converted = int(merged, base=base) / divisor
-        return converted
-    else:
-        print("Not a Binary")
-        return float(s)
 
+    slist = [i for i in s if i !="."]
+    news = "".join(slist)
+    try:
+        dot_position = len(s) - s.index(".") -1 
+    except:
+        dot_position = 0 
+    converted = int(news, base=base) /  (base ** dot_position)
+    print(converted)
+    return converted
  
  # Demo:
 eval_strfrac('0.11', 2)
