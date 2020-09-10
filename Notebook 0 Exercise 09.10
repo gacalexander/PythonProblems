@@ -102,45 +102,45 @@ def int_to_binary(value, bits):
     return bin(value).replace('0b', '').rjust(bits, '0')
 
 def fp_bin(v):
+def fp_bin(v):
+
+    # convert  to a float
+    v = float(v)
+    # Get the hex value 
     v = v.hex() #Convert float to its hexadecimal values to extact sign, number and exponent
-    print("Input",v)
-    # dot_position = len(str(v)) - str(v).index(".") - 1 #Find if the input float has decimal
-    # print(dot_position)
+
     v = v.split('0x') #Split to extract the sign portion
-    print("V in Function", v)
+
     # Sign portion v[0]
-    print("Length", len(v[0]))
+
     if v[0]== "-": #Check and populate the sign
         v_sign = v[0]
     else:
         v_sign = "+"
-    print("V Sign", v_sign)
-    # Number portion v[1] split again
+
+    # split the number and power  parts 
     lst_bin_exp = v[1].split('p')
+    # get the power part 
     v_exp = int(lst_bin_exp[1])
-    numpor = lst_bin_exp[0]
+    # get the number parts to format 
     try:
         dot_position = lst_bin_exp[0].index(".")
         secondpart =   lst_bin_exp[0][dot_position+1:]
     except:
         dot_position = len(lst_bin_exp[0])
-        secondpart = ""
-        # firstpart = int(numpor[:dot_position])
-    firstpart = lst_bin_exp[0][:dot_position]
-    print("First Part",firstpart)
-        # secondpart = bin(int(secondpart, 16))[2:].zfill(52)
-    print("Second Part", secondpart)
-        # v_signif = str(firstpart) + "." + secondpart
+        secondpart = "0"
 
+    firstpart = lst_bin_exp[0][:dot_position]
+    secondpart = bin(int(secondpart, 16))[2:].zfill(52)
+    v_signif = str(firstpart) + "." + secondpart
+    
     return
-        # v_signif = bin(int(numpor,16))
-    # return (v_sign,v_signif,v_exp)
-# print(fp_bin(1.0 + (2 ** (-52))))
+
 print(fp_bin(0.0))
 print(fp_bin(-0.1))
-print(fp_bin(123.23)a)
-print(fp_bin('f.1'))
-print(fp_bin(1600))
+print(fp_bin(123.23))
+print(fp_bin(-123.23))
+print(fp_bin(16))
 
 
 
