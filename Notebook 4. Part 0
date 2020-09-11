@@ -1,4 +1,4 @@
-Integers as strings
+'''Integers as strings
 Consider the string of digits:
 
     '16180339887'
@@ -25,7 +25,7 @@ And in general, the value of a string of  d+1d+1  digits in base  bb  is,
 Bases greater than ten (10). Observe that when the base at most ten, the digits are the usual decimal digits, 0, 1, 2, ..., 9. What happens when the base is greater than ten? For this notebook, suppose we are interested in bases that are at most 36; then, we will adopt the convention of using lowercase Roman letters, a, b, c, ..., z for "digits" whose values correspond to 10, 11, 12, ..., 35.
 
 Before moving on to the next exercise, run the following code cell. It has three functions, which are used in some of the testing code. Given a base, one of these functions checks whether a single-character input string is a valid digit; and the other returns a list of all valid string digits. (The third one simply prints the valid digit list, given a base.) If you want some additional practice reading code, you might inspect these functions.
-
+'''
 def is_valid_strdigit(c, base=2):
     if type (c) is not str: return False # Reject non-string digits
     if (type (base) is not int) or (base < 2) or (base > 36): return False # Reject non-integer bases outside 2-36
@@ -52,18 +52,18 @@ print_valid_strdigits(6)
 print_valid_strdigits(16)
 print_valid_strdigits(23)
 
-Exercise 0 (3 points). Write a function, eval_strint(s, base). It takes a string of digits s in the base given by base. It returns its value as an integer.
+'''Exercise 0 (3 points). Write a function, eval_strint(s, base). It takes a string of digits s in the base given by base. It returns its value as an integer.
 
 That is, this function implements the mathematical object,  [[s]]b[[s]]b , which would convert a string  ss  to its numerical value, assuming its digits are given in base  bb . For example:
 
     eval_strint('100111010', base=2) == 314
 Hint: Python makes this exercise very easy. Search Python's online documentation for information about the int() constructor to see how you can apply it to solve this problem. (You have encountered this constructor already, in Notebook/Assignment 2.)
-
+'''
 def eval_strint(s, base=2):
     assert type(s) is str
     assert 2 <= base <= 36
     return int(s,base)
-    
+'''    
 Exercise 1 (4 points). Suppose a string of digits s in base base contains up to one fractional point. Complete the function, eval_strfrac(s, base), so that it returns its corresponding floating-point value.
 
 Your function should always return a value of type float, even if the input happens to correspond to an exact integer.
@@ -76,6 +76,8 @@ Examples:
 Comment. Because of potential floating-point roundoff errors, as explained in the videos, conversions based on the general polynomial formula given previously will not be exact. The testing code will include a built-in tolerance to account for such errors.
 
 Hint. You should be able to construct a solution that reuses the function, eval_strint(), from Exercise 0.
+'''
+
 
 from fractions import Fraction
 def is_valid_strfrac(s, base=2):
@@ -86,6 +88,7 @@ def is_binary(x):
  return set(x) <= set('01')
 
 def eval_strfrac(s, base=2):
+    # Converts a fraction string in a given base to a base 10 value 
     assert is_valid_strfrac(s, base), "'{}' contains invalid digits for a base-{} number.".format(s, base)
 
     slist = [i for i in s if i !="."]
@@ -146,7 +149,7 @@ for _ in range(10):
     check_random_strfrac()
     
 print("\n(Passed!)")
-
+'''
 Floating-point encodings
 Recall that a floating-point encoding or format is a normalized scientific notation consisting of a base, a sign, a fractional significand or mantissa, and a signed integer exponent. Conceptually, think of it as a tuple of the form,  (±,[[s]]b,x)(±,[[s]]b,x) , where  bb  is the digit base (e.g., decimal, binary);  ±±  is the sign bit;  ss  is the significand encoded as a base  bb  string; and  xx  is the exponent. For simplicity, let's assume that only the significand  ss  is encoded in base  bb  and treat  xx  as an integer value. Mathematically, the value of this tuple is  ±[[s]]b×bx±[[s]]b×bx .
 
@@ -162,6 +165,7 @@ Special values. You might have noticed that the exponent is slightly asymmetric.
 If you are familiar with languages like C, C++, or Java, then IEEE double-precision format is the same as the double primitive type. The other common format is single-precision, which is float in those same languages.
 
 Inspecting a floating-point number in Python. Python provides support for looking at floating-point values directly! Given any floating-point variable, v (that is, type(v) is float), the method v.hex() returns a string representation of its encoding. It's easiest to see by example, so run the following code cell:
+'''
 
 def print_fp_hex(v):
     assert type(v) is float
@@ -175,6 +179,7 @@ print_fp_hex(-0.1)
 # Recall: v = 16.0625 ==> v.hex() == '0x1.0100000000000p+4'
 print((+1.0) * eval_strfrac('1.0100000000000', base=16) * (2**4))
 
+'''
 Exercise 2 (4 points). Write a function, fp_bin(v), that determines the IEEE-754 tuple representation of any double-precision floating-point value, v. That is, given the variable v such that type(v) is float, it should return a tuple with three components, (s_sign, s_signif, v_exp) such that
 
 s_sign is a string representing the sign bit, encoded as either a '+' or '-' character;
@@ -190,11 +195,11 @@ There are many ways to approach this problem. One we came up exploits the observ
 # Demo of `float.hex()`
 v = -1280.03125
 print(v.hex())
-
+'''
   
 # Test: `fp_bin_test0` (2 points)
 def fp_bin(v):
-
+        # convert flocating point value to binary 
         # convert  to a float
         v = float(v)
         # Get the hex value
@@ -226,7 +231,10 @@ def fp_bin(v):
         v_signif = str(firstpart) + "." + secondpart
 
         return (v_sign,v_signif,v_exp)
+        
+        
 def assert_fp_bin_props(v_you_tuple):
+    
     assert len(v_you_tuple) == 3, "Your floating point value should be a tuple with three components; yours has {}.".format(len(v_you_tuple))
     v_you_sign, v_you_signif, v_you_exp = v_you_tuple
     assert v_you_sign in ['+', '-'], "Your sign is '{}' instead of either '+' or '-'".format(v_you_sign)
@@ -281,6 +289,7 @@ for _ in range(10):
     
 print("\n(Passed.)")
 
+'''
 Exercise 3 (2 points). Suppose you are given a floating-point value in a base given by base and in the form of the tuple, (sign, significand, exponent), where
 
 sign is either the character '+' if the value is positive and '-' otherwise;
@@ -295,6 +304,7 @@ so that it converts the tuple into a numerical value (of type float) and returns
 For example, eval_fp('+', '1.25000', -1, base=10) should return a value that is close to 0.125.
 
 One of the two test cells below uses your implementation of fp_bin() from a previous exercise. If you are encountering errors you cannot figure out, it's possible that there is still an unresolved bug in fp_bin() that its test cell did not catch.
+'''
 
 def eval_fp(sign, significand, exponent, base=2):
     assert sign in ['+', '-'], "Sign bit must be '+' or '-', not '{}'.".format(sign)
@@ -309,11 +319,14 @@ def eval_fp(sign, significand, exponent, base=2):
 
     MF = int(base) ** int(exponent)
     number_to_base10 = eval_strfrac(str(significand), int(base)) * MF
-        if sign == "+":
+    if sign == "+":
         return number_to_base10
     else:
         return -1*number_to_base10
+        
+        
   # Test: `eval_fp_test0` (1 point)
+
 
 def check_eval_fp(sign, significand, exponent, v_true, base=2, tol=1e-7):
     v_you = eval_fp(sign, significand, exponent, base)
@@ -342,6 +355,7 @@ for _ in range(5):
 
 print("\n(Passed.)")
 
+'''
 Exercise 4 (2 points). Suppose you are given two binary floating-point values, u and v, in the tuple form given above. That is,
 
     u == (u_sign, u_signif, u_exp)
@@ -364,7 +378,8 @@ Note 0: Assume that signif_bits includes the leading 1. For instance, suppose si
 
 Note 1: You may assume that u_signif and v_signif use signif_bits bits (including the leading 1). Furthermore, you may assume each uses far fewer bits than the underlying native floating-point type (float) does, so that you can use native floating-point to compute intermediate values.
 
-Hint: An earlier exercise defines a function, fp_bin(v), which you can use to convert a Python native floating-point value (i.e., type(v) is float) into a binary tuple representation.
+Hint: An earlier exercise defines a function, p_bfin(v), which you can use to convert a Python native floating-point value (i.e., type(v) is float) into a binary tuple representation.
+'''
 
 def add_fp_bin(u, v, signif_bits):
     u_sign, u_signif, u_exp = u
@@ -391,6 +406,8 @@ def add_fp_bin(u, v, signif_bits):
     v_signif = sums[1][:int(signif_bits)+1]
 
     return((sums[0],v_signif, sums[2]))
+
+    
  
  # Test: `add_fp_bin_test`
 
@@ -426,3 +443,5 @@ w_true = ('+', '1.11111', -1)
 check_add_fp_bin(u, v, 6, w_true)
 
 print("\n(Passed!)")
+
+
