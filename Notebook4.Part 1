@@ -314,11 +314,13 @@ Hint 3. Some of you will look up fancy algorithms to compensate for error. That'
 
 Note. The test cell will disallow certain "shortcuts" on this problem, namely, importing certain implementations of summation. Only basic Python is needed.
 
-def alg_sum_accurate(x):
+def alg_sum_accurate(x): # x == x[:n]
     assert type(x) is list
-    ###
-    ### YOUR CODE HERE
-    ###
+    y = [ (len(x) - i ) * EPS_D  for i in range(len(x))] 
+    s =   alg_sum(x) + abs(alg_dot (x, y))
+    return s
+    
+    
 # Test: `alg_sum_accurate_test`
 from math import exp
 from numpy.random import lognormal
