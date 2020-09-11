@@ -191,14 +191,41 @@ There are many ways to approach this problem. One we came up exploits the observ
 v = -1280.03125
 print(v.hex())
 
-def fp_bin(v):
-    assert type(v) is float
-###
-### YOUR CODE HERE
-###
-
+  
 # Test: `fp_bin_test0` (2 points)
+def fp_bin(v):
 
+        # convert  to a float
+        v = float(v)
+        # Get the hex value
+        v = v.hex()  # Convert float to its hexadecimal values to extact sign, number and exponent
+
+        v = v.split('0x')  # Split to extract the sign portion
+
+        # Sign portion v[0]
+
+        if v[0] == "-":  # Check and populate the sign
+            v_sign = v[0]
+        else:
+            v_sign = "+"
+
+        # split the number and power  parts
+        lst_bin_exp = v[1].split('p')
+        # get the power part
+        v_exp = int(lst_bin_exp[1])
+        # get the number parts to format
+        try:
+            dot_position = lst_bin_exp[0].index(".")
+            secondpart = lst_bin_exp[0][dot_position + 1:]
+        except:
+            dot_position = len(lst_bin_exp[0])
+            secondpart = "0"
+
+        firstpart = lst_bin_exp[0][:dot_position]
+        secondpart = bin(int(secondpart, 16))[2:].zfill(52)
+        v_signif = str(firstpart) + "." + secondpart
+
+        return (v_sign,v_signif,v_exp)
 def assert_fp_bin_props(v_you_tuple):
     assert len(v_you_tuple) == 3, "Your floating point value should be a tuple with three components; yours has {}.".format(len(v_you_tuple))
     v_you_sign, v_you_signif, v_you_exp = v_you_tuple
