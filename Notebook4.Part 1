@@ -197,8 +197,7 @@ t = [0.0] * len(N)
 
 # Your code should do the experiment described above for
 # each problem size N[i], and store the computed sum in t[i].
-for item in range(len(N)):
-    t[item] = alg_sum(N[:item])
+t = [ alg_sum([0.1] * item) for item in N]
 
 print(t)
 
