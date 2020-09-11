@@ -375,8 +375,22 @@ def add_fp_bin(u, v, signif_bits):
     assert v_signif[:2] == '1.' and len(v_signif) == (signif_bits+1)
     
     ###
-    ### YOUR CODE HERE
+    # convert both bins to floating point value 
+    # add the two values
+    # convert the sum to binary 
+    # format to significant digits 
     ###
+    
+    u_base10 = eval_fp(u_sign, u_signif, u_exp, 2)
+    v_base10 = eval_fp(v_sign, v_signif, v_exp, 2)
+    
+    sums = u_base10 + v_base10
+    sums = fp_bin(sums)
+    
+    
+    v_signif = sums[1][:int(signif_bits)+1]
+
+    return((sums[0],v_signif, sums[2]))
  
  # Test: `add_fp_bin_test`
 
