@@ -274,9 +274,9 @@ def eval_fp(sign, significand, exponent, base=2):
     assert is_valid_strfrac(significand, base), "Invalid significand for base-{}: '{}'".format(base, significand)
     assert type(exponent) is int
 
-    ###
-    ### YOUR CODE HERE
-    ###
+    MF = int(base) ** int(exponent)
+    number_to_base10 = eval_strfrac(str(significand), int(base)) * MF
+    return number_to_base10
   # Test: `eval_fp_test0` (1 point)
 
 def check_eval_fp(sign, significand, exponent, v_true, base=2, tol=1e-7):
