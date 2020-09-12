@@ -1,3 +1,7 @@
+import matplotlib 
+import pandas as pd
+import numpy 
+
 ''' Floating-point arithmetic
 As a data analyst, you will be concerned primarily with numerical programs in which the bulk of the computational work involves floating-point computation. This notebook guides you through some of the most fundamental concepts in how computers store real numbers, so you can be smarter about your number crunching.
 
@@ -185,11 +189,13 @@ A numerical experiment: Summation
 Let's do an experiment to verify that these bounds hold.
 
 Exercise 0 (2 points). In the code cell below, we've defined a list,
-'''
+
+
 N = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
 Take each entry N[i] to be a problem size.
 Let t[:len(N)] be a list, which will hold computed sums.
 For each N[i], run an experiment where you sum a list of values x[:N[i]] using alg_sum(). You should initialize x[:] so that all elements have the value 0.1. Store the computed sum in t[i].
+'''
 N = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
 
 # Initialize an array t of size len(N) to all zeroes.
@@ -203,10 +209,10 @@ print(t)
 
 # Test: `experiment_results`
 import pandas as pd
-from IPython.display import display
+#from IPython.display import display
 
 import matplotlib.pyplot as plt
-%matplotlib inline
+#%matplotlib inline
 
 s = [1., 10., 100., 1000., 10000., 100000., 1000000.] # exact sums
 t_minus_s_rel = [(t_i - s_i) / s_i for s_i, t_i in zip (s, t)]
@@ -220,16 +226,16 @@ print("Relative errors in the computed result:")
 #display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n*EPS_D for n in N]}))
 
 
-print(assert all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)]))
+assert  all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)])
 
 print("\n(Passed!)")
 
 # Test: `experiment_results`
 import pandas as pd
-from IPython.display import display
+#from IPython.display import display
 
 import matplotlib.pyplot as plt
-%matplotlib inline
+#%matplotlib inline
 
 s = [1., 10., 100., 1000., 10000., 100000., 1000000.] # exact sums
 t_minus_s_rel = [(t_i - s_i) / s_i for s_i, t_i in zip (s, t)]
@@ -240,7 +246,7 @@ rel_err_bound = [ni*EPS_D for ni in N]
 plt.loglog (N, rel_err_computed, 'b*', N, rel_err_bound, 'r--')
 
 print("Relative errors in the computed result:")
-display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n*EPS_D for n in N]}))
+#display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n*EPS_D for n in N]}))
 
 assert all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)])
 
@@ -311,7 +317,7 @@ Hint 2. Some of you will try to "implement" the error formula to somehow compens
 Hint 3. Some of you will look up fancy algorithms to compensate for error. That's great, because you may learn something deep in the process, but it's also not necessary. Again, see Hint 2.
 
 Note. The test cell will disallow certain "shortcuts" on this problem, namely, importing certain implementations of summation. Only basic Python is needed.
-
+'''
 def alg_sum_accurate(x): # x == x[:n]
     assert type(x) is list
     y = [ i * EPS_D  for i in range(len(x), 0 , -1)] 
