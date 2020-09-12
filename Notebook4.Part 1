@@ -1,4 +1,4 @@
-Floating-point arithmetic
+''' Floating-point arithmetic
 As a data analyst, you will be concerned primarily with numerical programs in which the bulk of the computational work involves floating-point computation. This notebook guides you through some of the most fundamental concepts in how computers store real numbers, so you can be smarter about your number crunching.
 
 WYSInnWYG, or "what you see is not necessarily what you get."
@@ -84,7 +84,7 @@ t2: 0x1.fffffffffffffp-1
 By the way, the NumPy/SciPy package, which we will cover later in the semester, allows you to determine machine epsilon in a portable way. Just note this fact for now.
 
 Here is an example of printing machine epsilon for both single-precision and double-precision values.
-
+'''
 import numpy as np
 
 EPS_S = np.finfo (np.float32).eps
@@ -92,7 +92,7 @@ EPS_D = np.finfo (float).eps
 
 print("Single-precision machine epsilon:", float(EPS_S).hex(), "~", EPS_S)
 print("Double-precision machine epsilon:", float(EPS_D).hex(), "~", EPS_D)
-Single-precision machine epsilon: 0x1.0000000000000p-23 ~ 1.1920929e-07
+'''Single-precision machine epsilon: 0x1.0000000000000p-23 ~ 1.1920929e-07
 Double-precision machine epsilon: 0x1.0000000000000p-52 ~ 2.220446049250313e-16
 Analyzing floating-point programs
 Let's say someone devises an algorithm to compute  f(x) . For a given value  x , let's suppose this algorithm produces the value  alg(x) . One important question might be, is that output "good" or "bad?"
@@ -131,23 +131,23 @@ f(x)≡∑i=0n−1xi.
 Given  x , let's also denote its exact sum by the synonym  sn−1≡f(x) .
 
 Now consider the following Python program to compute its sum:
-
+'''
 def alg_sum(x): # x == x[:n]
     s = 0.
     for x_i in x: # x_0, x_1, \ldots, x_{n-1}
         s += x_i
     return s
-In exact arithmetic, meaning without any rounding errors, this program would compute the exact sum. (See also the note below.) However, you know that finite arithmetic means there will be some rounding error after each addition.
+'''In exact arithmetic, meaning without any rounding errors, this program would compute the exact sum. (See also the note below.) However, you know that finite arithmetic means there will be some rounding error after each addition.
 
-Let  δi  denote the (unknown) error at iteration  i . Then, assuming the collection x represents the input values exactly, you can show that alg_sum(x) computes  ŝ n−1  where
+Let  δi  denote the (unknown) error at iteration  i . Then, assuming the collection x represents the input values exactly, you can show that alg_sum(x) computes  ŝ n−1  where
 
-ŝ n−1≈sn−1+∑i=0n−1siδi,
+ŝ n−1≈sn−1+∑i=0n−1siδi,
  
 that is, the exact sum plus a perturbation, which is the second term (the sum). The question, then, is under what conditions will this sum will be small?
 
 Using a backward error analysis, you can show that
 
-ŝ n−1≈∑i=0n−1xi(1+Δi)=f(x+Δ),
+ŝ n−1≈∑i=0n−1xi(1+Δi)=f(x+Δ),
  
 where  Δ≡(Δ0,Δ1,…,Δn−1) . In other words, the computed sum is the exact solution to a slightly different problem,  x+Δ .
 
@@ -165,7 +165,7 @@ Based on this result, you can probably surmise why double-precision is usually t
 
 In the case of this summation, we can quantify not just the backward error (i.e.,  Δi ) but also the forward error. In that case, it turns out that
 
-∣∣ŝ n−1−sn−1∣∣⪅nϵ‖x‖1.
+∣∣ŝ n−1−sn−1∣∣⪅nϵ‖x‖1.
  
 Note: Analysis in exact arithmetic. We claimed above that alg_sum() is correct in exact arithmetic, i.e., in the absence of round-off error. You probably have a good sense of that just reading the code.
 
@@ -175,17 +175,17 @@ First, assume that the for loop enumerates each element p[i] in order from i=0 t
 
 Let  pk≡𝚙[k]  be the  k -th element of p[:]. Let  si≡∑ik=0pk ; in other words,  si  is the exact mathematical sum of p[:i+1]. Thus,  sn−1  is the exact sum of p[:].
 
-Let  ŝ −1  denote the initial value of the variable s, which is 0. For any  i≥0 , let  ŝ i  denote the computed value of the variable s immediately after the execution of line 4, where  i=𝚒 . When  i=𝚒=0 ,  ŝ 0=ŝ −1+p0=p0 , which is the exact sum of p[:1]. Thus,  ŝ 0=s0 .
+Let  ŝ −1  denote the initial value of the variable s, which is 0. For any  i≥0 , let  ŝ i  denote the computed value of the variable s immediately after the execution of line 4, where  i=𝚒 . When  i=𝚒=0 ,  ŝ 0=ŝ −1+p0=p0 , which is the exact sum of p[:1]. Thus,  ŝ 0=s0 .
 
-Now suppose that  ŝ i−1=si−1 . When  𝚒=i , we want to show that  ŝ i=si . After line 4 executes,  ŝ i=ŝ i−1+pi=si−1+pi=si . Thus, the computed value  ŝ i  is the exact sum  si .
+Now suppose that  ŝ i−1=si−1 . When  𝚒=i , we want to show that  ŝ i=si . After line 4 executes,  ŝ i=ŝ i−1+pi=si−1+pi=si . Thus, the computed value  ŝ i  is the exact sum  si .
 
-If  i=n , then, at line 5, the value  𝚜=ŝ n−1=sn−1 , and thus the program must in line 5 return the exact sum.
+If  i=n , then, at line 5, the value  𝚜=ŝ n−1=sn−1 , and thus the program must in line 5 return the exact sum.
 
 A numerical experiment: Summation
 Let's do an experiment to verify that these bounds hold.
 
 Exercise 0 (2 points). In the code cell below, we've defined a list,
-
+'''
 N = [10, 100, 1000, 10000, 100000, 1000000, 10000000]
 Take each entry N[i] to be a problem size.
 Let t[:len(N)] be a list, which will hold computed sums.
@@ -217,16 +217,13 @@ rel_err_bound = [ni*EPS_D for ni in N]
 plt.loglog (N, rel_err_computed, 'b*', N, rel_err_bound, 'r--')
 
 print("Relative errors in the computed result:")
-display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n*EPS_D for n in N]}))
+#display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n*EPS_D for n in N]}))
 
 
 print(assert all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)]))
 
 print("\n(Passed!)")
-  File "<ipython-input-1-772e38836950>", line 32
-    print(assert all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)]))
-               ^
-SyntaxError: invalid syntax
+
 # Test: `experiment_results`
 import pandas as pd
 from IPython.display import display
@@ -248,6 +245,7 @@ display (pd.DataFrame ({'n': N, 'rel_err': rel_err_computed, 'rel_err_bound': [n
 assert all([abs(r) <= n*EPS_D for r, n in zip(t_minus_s_rel, N)])
 
 print("\n(Passed!)")
+'''
 Relative errors in the computed result:
 n	rel_err	rel_err_bound
 0	10	1.00000	2.220446e-15
@@ -281,9 +279,9 @@ Exercise 1 (OPTIONAL -- 0 points, not graded or collected). Show under what cond
 
 Hint. Let  (xk,yk)  denote the exact values of the corresponding inputs,  (𝚡[k],𝚢[k]) . Then the true dot product,  xTy=∑n−1l=0xlyl . Next, let  p̂ k  denote the  k -th computed product, i.e.,  p̂ k≡xkyk(1+γk) , where  γk  is the  k -th round-off error and  |γk|≤ϵ . Then apply the results for alg_sum() to analyze alg_dot().
 
-Answer. Following the hint, alg_sum will compute  ŝ n−1  on the computed inputs,  {p̂ k} . Thus,
+Answer. Following the hint, alg_sum will compute  ŝ n−1  on the computed inputs,  {p̂ k} . Thus,
 
-ŝ n−1≈==∑l=0n−1p̂ l(1+Δl)∑l=0n−1xlyl(1+γl)(1+Δl)∑l=0n−1xlyl(1+γl+Δl+γlΔl).
+ŝ n−1≈==∑l=0n−1p̂ l(1+Δl)∑l=0n−1xlyl(1+γl)(1+Δl)∑l=0n−1xlyl(1+γl+Δl+γlΔl).
  
 Mathematically, this appears to be the exact dot product to an input in which  x  is exact and  y  is perturbed (or vice-versa). To argue that alg_dot is backward stable, we need to establish under what conditions the perturbation,  ∣∣γl+Δl+γlΔl∣∣ , is "small." Since  |γl|≤ϵ  and  |Δl|≤nϵ ,
 
@@ -292,13 +290,13 @@ Mathematically, this appears to be the exact dot product to an input in which  x
 More accurate summation
 Suppose you wish to compute the sum,  s=x0+x1+x2+x3 . Let's say you use the "standard algorithm," which accumulates the terms one-by-one from left-to-right, as done by alg_sum() above.
 
-For the standard algorithm, let the  i -th addition incur a roundoff error,  δi . Then our usual error analysis would reveal that the absolute error in the computed sum,  ŝ  , is approximately:
+For the standard algorithm, let the  i -th addition incur a roundoff error,  δi . Then our usual error analysis would reveal that the absolute error in the computed sum,  ŝ  , is approximately:
 
-ŝ −s≈x0(δ0+δ1+δ2+δ3)+x1(δ1+δ2+δ3)+x2(δ2+δ3)+x3δ3.
+ŝ −s≈x0(δ0+δ1+δ2+δ3)+x1(δ1+δ2+δ3)+x2(δ2+δ3)+x3δ3.
  
 And since  |δi|≤ϵ , you would bound the absolute value of the error by,
 
-∣∣ŝ −s∣∣≲(4|x0|+3|x1|+2|x2|+1|x3|)ϵ.
+∣∣ŝ −s∣∣≲(4|x0|+3|x1|+2|x2|+1|x3|)ϵ.
  
 Notice that  |x0|  is multiplied by 4,  |x1|  by 3, and so on.
 
@@ -316,8 +314,8 @@ Note. The test cell will disallow certain "shortcuts" on this problem, namely, i
 
 def alg_sum_accurate(x): # x == x[:n]
     assert type(x) is list
-    y = [ (len(x) - i ) * EPS_D  for i in range(len(x))] 
-    s =   alg_sum(x) + abs(alg_dot (x, y))
+    y = [ i * EPS_D  for i in range(len(x), 0 , -1)] 
+    s =   alg_sum(x) - abs(alg_dot (x, y))
     return s
     
     
