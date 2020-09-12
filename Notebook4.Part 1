@@ -318,11 +318,23 @@ Hint 3. Some of you will look up fancy algorithms to compensate for error. That'
 
 Note. The test cell will disallow certain "shortcuts" on this problem, namely, importing certain implementations of summation. Only basic Python is needed.
 '''
+
 def alg_sum_accurate(x): # x == x[:n]
     assert type(x) is list
-    y = [ i * EPS_D  for i in range(len(x), 0 , -1)] 
-    s =   alg_sum(x) - abs(alg_dot (x, y))
-    return s
+    oldTotal = 0.0
+    computationError = 0.0
+    for item in x:
+        #subtract the rounding error from the new item before adding it
+        newItem = item - computationError
+        # now get the sum 
+        newTotal = oldTotal + newItem
+        #calculate the computation error basically when youtake newTotal andsubtract the oldsum and the new items you should get zero 
+        # but because of rounding , you will see a residual which is the computationError 
+        computationError = (newTotal - oldTotal) - newItem
+        oldTotal = newTotal
+
+    # Note that you subtract the computation error before you return the result 
+    return newTotal - computationError
     
     
 # Test: `alg_sum_accurate_test`
