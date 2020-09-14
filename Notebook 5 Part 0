@@ -402,10 +402,12 @@ Exercise 3 (3 points). Implement an enhanced phone number parser that can handle
 4045551212
 As before, it should not be sensitive to leading or trailing spaces. Also, for the patterns in which the area code is enclosed in parentheses, it should not be sensitive to the number of spaces separating the area code from the remainder of the number.
 
+##########################
+import re
 def parse_phone2 (s):
-    ###
-    ### YOUR CODE HERE
-    ###
+    s= s.strip()
+    patterns = re.compile (r'^\(\d{3}\)[" "]*\d{3}-\d{4}$|^\(\d{3}\)[" "]*\d{3}\d{4}$|^\d{3}-\d{3}-\d{4}$|^\d{3}-\d{7}$|^\d{6}-\d{4}$|^\d{10}$') 
+    return re.match(patterns , s)
 # Test cell: `parse_phone2_test`
 
 def asm_phone2(a, l, r):
