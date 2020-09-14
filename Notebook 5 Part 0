@@ -408,6 +408,29 @@ def parse_phone2 (s):
     s= s.strip()
     patterns = re.compile (r'^\(\d{3}\)[" "]*\d{3}-\d{4}$|^\(\d{3}\)[" "]*\d{3}\d{4}$|^\d{3}-\d{3}-\d{4}$|^\d{3}-\d{7}$|^\d{6}-\d{4}$|^\d{10}$') 
     return re.match(patterns , s)
+    
+#### SANTHI's solution
+import re
+def parse_phone2 (s):
+    s= s.strip()
+    patterns = re.compile (r'^\(\d{3}\)[" "]*\d{3}-\d{4}$|^\(\d{3}\)[" "]*\d{3}\d{4}$|^\d{3}-\d{3}-\d{4}$|^\d{3}-\d{7}$|^\d{6}-\d{4}$|^\d{10}$') 
+    matches = re.match(patterns , s)
+    if matches is not None:
+        s= s.replace("(","")
+        print(s)
+        s= s.replace(")","")
+        print(s)
+        s= s.replace("-","")
+        print(s)
+        s= s.replace(" ","")
+        print(s)
+        print((s[0:3],s[3:6],s[6:10]))
+        return((s[0:3],s[3:6],s[6:10]))        
+    else:
+        raise ValueError("ValueError exception thrown")
+        
+####################End Santhi's solution
+
 # Test cell: `parse_phone2_test`
 
 def asm_phone2(a, l, r):
