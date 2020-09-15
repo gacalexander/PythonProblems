@@ -52,9 +52,77 @@ rankings[i]['numrevs']: The number of reviews, as an integer.
 rankings[i]['price']: The price range, as dollar signs, e.g., '$', '$$', '$$$', or '$$$$'.
 Of course, since the current topic is regular expressions, you might try to apply them (possibly combined with other string manipulation methods) find the particular patterns that yield the desired information.
 
-###
-### YOUR CODE HERE
-###
+import re
+
+# Gettingh the price 
+#price_test = r'''"<span class="business-attribute price-range">$$</span>"'''
+price_pattern_divtag=re.compile('<span class="business-attribute price-range">[\$]*</span>')
+print(price_pattern_divtag)
+
+
+    
+#get the price_pattern_divtag
+price_matches = price_pattern_divtag.findall(a)
+print(price_matches)
+
+price = [re.split('[>,<]+', i)[2] for i in   price_matches]
+print(price)
+############################################
+
+name_pattern_divtag=re.compile('<span class="indexed-biz-name">.*</span></a>')
+print(name_pattern_divtag)
+
+
+    
+#get the price_pattern_divtag
+name_matches = name_pattern_divtag.findall(a)
+print(name_matches)
+
+names = [re.split('[>,<]+', i)[5] for i in   name_matches]
+print(names)
+
+
+####################
+
+#<div class="i-stars i-stars--regular-4 rating-large" title="4.0 star rating">
+
+stars_pattern_divtag=re.compile('<div class="i-stars.*" title=".*star rating">')
+print(stars_pattern_divtag)
+
+
+    
+#get the price_pattern_divtag
+stars_matches = stars_pattern_divtag.findall(a)
+print(stars_matches)
+
+stars = [re.split('["]+', i)[3].replace(" star rating","") for i in   stars_matches]
+print(stars)
+
+################
+'''<span class="review-count rating-qualifier">
+            549 reviews
+    </span>
+'''
+
+numrevs_pattern_divtag=re.compile('[\d]* reviews')
+print(numrevs_pattern_divtag)
+
+
+    
+#get the price_pattern_divtag
+numrevs_matches = numrevs_pattern_divtag.findall(a)
+print(numrevs_matches)
+
+numrevs = [re.split('[" "]+', i)[0] for i in   numrevs_matches]
+
+print(numrevs)
+
+###########################
+
+rankings=[{'name': names[i] , 'stars':stars[i] , 'numrevs':numrevs[i] , 'price':price[i]} for i in range(len(names))]
+print(rankings)
+
+
 # Test cell: `rankings_test`
 
 assert type(rankings) is list, "`rankings` must be a list"
