@@ -53,7 +53,13 @@ rankings[i]['price']: The price range, as dollar signs, e.g., '$', '$$', '$$$', 
 Of course, since the current topic is regular expressions, you might try to apply them (possibly combined with other string manipulation methods) find the particular patterns that yield the desired information.
 
 import re
+# Assume that all rated restaurants get listed only after <span class="indexed-biz-name">1.         
+# find position of <span class="indexed-biz-name">1.         
+position = re.search('<span class="indexed-biz-name">1.', yelp_html)
+newyelp_html = yelp_html[position.start():]
 
+
+a = newyelp_html
 # Gettingh the price 
 #price_test = r'''"<span class="business-attribute price-range">$$</span>"'''
 price_pattern_divtag=re.compile('<span class="business-attribute price-range">[\$]*</span>')
@@ -69,7 +75,7 @@ price = [re.split('[>,<]+', i)[2] for i in   price_matches]
 print(price)
 ############################################
 
-name_pattern_divtag=re.compile('<span class="indexed-biz-name">.*</span></a>')
+name_pattern_divtag=re.compile('<a class="biz-name.*</span>')
 print(name_pattern_divtag)
 
 
@@ -78,7 +84,7 @@ print(name_pattern_divtag)
 name_matches = name_pattern_divtag.findall(a)
 print(name_matches)
 
-names = [re.split('[>,<]+', i)[5] for i in   name_matches]
+names = [re.split('[>,<]+', i)[3] for i in   name_matches]
 print(names)
 
 
@@ -113,14 +119,7 @@ print(numrevs_pattern_divtag)
 numrevs_matches = numrevs_pattern_divtag.findall(a)
 print(numrevs_matches)
 
-numrevs = [re.split('[" "]+', i)[0] for i in   numrevs_matches]
-
-print(numrevs)
-
-###########################
-
-rankings=[{'name': names[i] , 'stars':stars[i] , 'numrevs':numrevs[i] , 'price':price[i]} for i in range(len(names))]
-print(rankings)
+numrevs = [int(re.split('[" "]+', i)[0]) for i in   numrevs_matches]
 
 
 # Test cell: `rankings_test`
