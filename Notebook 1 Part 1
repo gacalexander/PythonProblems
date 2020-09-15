@@ -120,6 +120,8 @@ numrevs_matches = numrevs_pattern_divtag.findall(a)
 print(numrevs_matches)
 
 numrevs = [int(re.split('[" "]+', i)[0]) for i in   numrevs_matches]
+rankings=[{  'numrevs':numrevs[i] , 'name': names[i], 'stars':stars[i] , 'price':price[i]} for i in range(len(names))]
+print(rankings)
 
 
 # Test cell: `rankings_test`
