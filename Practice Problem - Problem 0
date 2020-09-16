@@ -24,8 +24,24 @@ Exercise 0 (5 points). Write a function, var_method_0(x), that implements this f
 Remember not to use Python's built-in variance().
 
 def var_method_0(x):
-   print(len(x))
-# Test cell: `exercise_0_test`
+   meanval = 0.0
+   ntot = len(x)
+   # for x_i in x:
+   #     x_i += x_i
+   # meanval = accurate_sum(x)/ntot
+   # variance = accurate_sum([abs((x_i-meanval))**2 for x_i in x])/ntot
+   # meanval = sum([i for i in x])/ ntot
+   # calculate mean
+   m = sum(x) / len(x)
+   print("Mean", m)
+   # calculate variance using a list comprehension
+   var_res = sum((xi - m) ** 2 for xi in x) / len(x)
+   # meanval = statistics.mean(x)
+   # print("MeanVal",meanval)
+   # variance = accurate_sum([(Decimal(x_i)-meanval)**2 for x_i in x])/ntot
+   print(var_res)
+
+   return float(var_res)
 
 from random import gauss
 
