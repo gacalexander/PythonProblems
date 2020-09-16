@@ -108,11 +108,22 @@ Exercise 1 (5 points). Implement a function, var_method_1(x), for the one-pass s
 
 The test cell below will run several experiments comparing its accuracy to the accuracy of the first method. You should observe that the one-pass method can be highly inaccurate!
 
+from decimal import Decimal 
 def var_method_1(x):
+    temp_sum = 0
+    temp_sum_squares = 0
+    
     n = len(x)
-    ###
-    ### YOUR CODE HERE
-    ###
+
+    
+    for x_i in x: # Read x_i once, but use twice!
+        x_i = (x_i)
+        temp_sum += x_i
+        temp_sum_squares += (x_i * x_i)
+    var = (temp_sum_squares - 1/n * (temp_sum **2))/(n-1)
+    return (var)
+    
+    
 # Test cell: `exercise_1_test`
 
 from random import gauss
