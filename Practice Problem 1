@@ -278,10 +278,32 @@ Walc_values = lookup_column_values('Walc', math_header, math_data_rows)
 G3_values = lookup_column_values('G3', math_header, math_data_rows)
 
 # Your task: Build `dw_avg_grade` per the problem statement.
+dalc_unique_values = list(set(Dalc_values))
+walc_unique_values = list(set(Walc_values))
+score_sum = {}
+score_frequency= {}
+for d in dalc_unique_values:
+    for w in walc_unique_values:
+        score_sum[(d,w)] = 0
+        score_frequency[(d,w)] = 0
+print(score_sum)
+print(score_frequency)
 
-###
-### YOUR CODE HERE
-###
+
+for i in range(len(Dalc_values)):
+    score_sum[(Dalc_values[i],Dalc_values[i])] += g3_values[i]
+    score_frequency[(Dalc_values[i],Dalc_values[i])] +=1
+    
+print(score_sum)
+print(score_frequency)
+dw_avg = {}
+
+for d in dalc_unique_values:
+    for w in walc_unique_values:
+        if score_frequency[(d,w)] != 0:
+            dw_avg[(d,w)] = score_sum[(d,w)]/score_frequency[(d,w)]
+        
+print(dw_avg)
 # Test cell: `exercise_3_test`
 
 assert type(dw_avg_grade) is dict or type(dw_avg_grade) is defaultdict, "'dw_avg_grade' should be a dictionary (or default dictionary)."
