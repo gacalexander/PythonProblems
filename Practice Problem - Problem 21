@@ -8,8 +8,8 @@ Exercise 4 (2 points) depends on successful completion of Exercise 3.
 Pro-tips.
 
 If your program behavior seem strange, try resetting the kernel and rerunning everything.
-If you mess up this notebook or just want to start from scratch, save copies of all your partial responses and use Actions → Reset Assignment to get a fresh, original copy of this notebook. (Resetting will wipe out any answers you've written so far, so be sure to stash those somewhere safe if you intend to keep or reuse them!)
-If you generate excessive output (e.g., from an ill-placed print statement) that causes the notebook to load slowly or not at all, use Actions → Clear Notebook Output to get a clean copy. The clean copy will retain your code but remove any generated output. However, it will also rename the notebook to clean.xxx.ipynb. Since the autograder expects a notebook file with the original name, you'll need to rename the clean notebook accordingly.
+If you mess up this notebook or just want to start from scratch, save copies of all your partial responses and use Actions  →  Reset Assignment to get a fresh, original copy of this notebook. (Resetting will wipe out any answers you've written so far, so be sure to stash those somewhere safe if you intend to keep or reuse them!)
+If you generate excessive output (e.g., from an ill-placed print statement) that causes the notebook to load slowly or not at all, use Actions  →  Clear Notebook Output to get a clean copy. The clean copy will retain your code but remove any generated output. However, it will also rename the notebook to clean.xxx.ipynb. Since the autograder expects a notebook file with the original name, you'll need to rename the clean notebook accordingly.
 Good luck!
 
 Background
@@ -139,14 +139,12 @@ assert clean("I'm sorry, sir, but this is a 'gluten-free' restaurant. We don't s
        == ["i'm", 'sorry', 'sir', 'but', 'this', 'is', 'a', 'gluten', 'free', 'restaurant', 'we', "don't", 'serve', 'bread']
 Hint: While its use is not required, regular expression processing is a good tool for this problem.
 
+import re
 def clean(s):
-    ###
-    ### YOUR CODE HERE
-    ###
-  File "<ipython-input-6-2f128858b645>", line 4
-    ###
-       ^
-SyntaxError: unexpected EOF while parsing
+    s = s.replace("-", ' ').replace("[.,]",'').lower()
+    pattern = re.compile("[?<=a-z]+\'?[a-z]+|[a-z]")
+    clean_s = re.findall(pattern,s)
+    return clean_s
 # Test cell: `ex1_clean_a` (0.5 points)
 
 # Caption 123:
@@ -162,6 +160,7 @@ assert clean("'tricky''case'xyz 1") == ['tricky', "case'xyz"]
 assert clean("'tricky''case'xyz'two") == ['tricky', "case'xyz", "two"]
 
 print("\n(Passed!)")
+(Passed!)
 # Test cell: `ex1_clean_b` (2.5 points)
 
 print("""
@@ -217,20 +216,29 @@ for _ in range(100):
     ex1_check_case__(10, 8, 3)
     
 print("\n(Passed!)")
+This test cell is marked as having a hidden test, but does not.
+The testing code is exposed, below, but the solution values
+are masked using hashed values.
+
+Testing 100 randomly generated cases...
+
+(Passed!)
 Cleaned captions. In case you can't get your function above working, we have prepared a file of pre-cleaned captions. Below, the variable captions_clean is a list of strings, with the "clean" tokens separated by a single space, making them easy to split back into words. The subsequent exercises will use this variable (so don't modify it!).
 
 with open(get_path('toast/captions_cleaned.txt')) as fp:
     captions_clean = [c.strip() for c in fp.readlines()]
 print(repr(captions_clean[123]))
 print(repr(captions_clean[314]))
+"please sir that's obviously a clip on"
+"i'm sorry sir but the toastmasters meetings are on tuesday"
 Captions as "bags of words"
 Next, let's convert the captions into a "standard form," to help simplify our subsequent analysis.
 
-Stop words. First, not all words in a caption carry meaning. For example, the word "the" occurs commonly, but let's assume† that it isn't useful. In the area of natural language processing, such words are called stop words.
+Stop words. First, not all words in a caption carry meaning. For example, the word "the" occurs commonly, but let's assume †  that it isn't useful. In the area of natural language processing, such words are called stop words.
 
 Run the code cell below, which will create a list of stop words in an object named stopwords. Observe its type and contents.
 
-† This assumption may or may not be reasonable in the case of jokes, where these words can sometimes completely change the nuance of a joke. But for this problem, let's just go with it.
+†  This assumption may or may not be reasonable in the case of jokes, where these words can sometimes completely change the nuance of a joke. But for this problem, let's just go with it.
 
 from stopwords import stopwords
 
@@ -240,6 +248,11 @@ print("\nExamples:")
 for ex in ["shouldn't", "toast"]:
     is_or_isnt = "is" + ("" if ex in stopwords else " *not*")
     print(f'- "{ex}"', is_or_isnt, "a stop word.")
+<class 'set'> : {"can't", 'those', "they'd", 'any', 'most', 'your', 'no', "wouldn't", 'who', 'her', 'ought', 'had', "don't", 'would', "i've", 'be', 'as', "wasn't", "he'll", 'both', 'am', "there's", 'was', 'when', 'is', "who's", 'into', 'out', 'having', 'himself', "you'll", 'to', 'our', 'in', "i'd", 'under', 'has', 'than', "haven't", "she's", 'the', 'doing', 'it', 'are', 'at', 'herself', 'again', "how's", "she'll", "shan't", 'his', 'until', 'their', "hadn't", "why's", 'we', 'if', 'have', 'ourselves', "didn't", "you've", 'then', 'there', 'him', 'myself', 'own', 'being', 'same', 'its', 'down', 'too', "let's", "we've", 'he', "here's", "they're", 'whom', 'but', 'by', 'more', 'could', "that's", 'were', "couldn't", "won't", "she'd", "aren't", 'up', 'after', 'nor', 'all', 'do', 'on', 'before', 'ours', 'about', "we'll", 'yourselves', 'during', 'you', 'been', "you're", "he'd", "i'm", 'yourself', "he's", 'through', 'from', 'an', 'yours', 'with', 'she', 'why', 'that', 'over', 'this', 'themselves', 'below', 'where', 'here', 'did', "hasn't", 'my', 'hers', 'which', "doesn't", 'only', 'what', "shouldn't", 'while', 'some', "where's", 'between', 'how', 'should', 'above', 'off', 'itself', 'theirs', "isn't", "we're", 'these', 'very', "what's", 'for', "they'll", 'and', 'does', 'cannot', 'such', "mustn't", "they've", 'few', 'other', 'each', "i'll", 'or', "we'd", "weren't", 'because', "when's", "you'd", 'i', 'them', 'me', 'not', 'so', 'further', "it's", 'they', 'once', 'a', 'against', 'of'}
+
+Examples:
+- "shouldn't" is a stop word.
+- "toast" is *not* a stop word.
 The "bag of words" model. Let c be a cleaned caption. That is, assume it is already cleaned per Exercise 1 above. Its bag-of-words representation is the set of its words that are not stop words.
 
 For example, if c is the cleaned caption,
@@ -261,13 +274,17 @@ assert bag_of_words("you're in luck a slot for you just opened up in our kitchen
     assert bag_of_words("i'm sorry the toastmasters gala is for members only") \
            == {'gala', 'members', 'sorry', 'toastmasters'}
 def bag_of_words(c):
-    # Assume `c` is already clean per Exercise 1
-    ###
-    ### YOUR CODE HERE
-    ###
+    c_dict = clean(c)
+    new_list = []
+    for element in c_dict:
+        if element not in stopwords:
+             new_list.append(element)     
+    return set(new_list)
 # Demo of your function:
 print(bag_of_words("you're in luck a slot for you just opened up in our kitchen"))
 print(bag_of_words("i'm sorry the toastmasters gala is for members only"))
+{'just', 'slot', 'opened', 'luck', 'kitchen'}
+{'gala', 'toastmasters', 'sorry', 'members'}
 # Test cell: `ex2_bag_of_words` (2 points)
 
 print("""
@@ -320,6 +337,12 @@ for _ in range(100):
     ex2_check_case__(10, 8)
 
 print("\n(Passed!)")
+This test cell is marked as having a hidden test, but does not.
+The testing code is exposed, below, and uses randomly generated
+test cases to evaluate your implementation.
+
+
+(Passed!)
 Calculating all bags. In case your bag_of_words() is not working, we've pre-computed the bags for all cleaned captions. The code cell below will load these results from a file into a variable called, caption_bags, which is a list of bags. The subsequent exercises will use it (so don't modify it!).
 
 def load_bags(infilename="toast/caption_bags.pickle"):
@@ -333,6 +356,9 @@ def load_bags(infilename="toast/caption_bags.pickle"):
 caption_bags = load_bags()
 print("- Bag for caption 123:", caption_bags[123])
 print("- Bag for caption 314:", caption_bags[314])
+Loading caption bags from './resource/asnlib/publicdata/toast/caption_bags.pickle'...
+- Bag for caption 123: {'clip', 'sir', 'obviously', 'please'}
+- Bag for caption 314: {'sir', 'toastmasters', 'meetings', 'sorry', 'tuesday'}
 Counter objects
 The Python collections module defines a handy object called a Counter that can help you count the how many times a value occurs in any iterable collection. It's like a histogram, and it produces a dictionary-like result.
 
@@ -357,6 +383,10 @@ print(K_C, "==>", K_C['fish'], K_C['dog'])
 # Combine occurrence counts by simple addition!
 K_D = K_A + K_B + K_C
 print(K_D, "==>", K_D['fish'], K_D['dog'])
+Counter({'hat': 1, 'cat': 1, 'blue': 1, 'red': 1, 'fish': 1}) ==> 1 0
+Counter({'beret': 1, 'two': 1, 'one': 1, 'fish': 1, 'red': 1, 'dog': 1, 'blue': 1}) ==> 1 1
+Counter({'dog': 1, 'cat': 1, 'fish': 1}) ==> 1 1
+Counter({'fish': 3, 'cat': 2, 'blue': 2, 'red': 2, 'dog': 2, 'hat': 1, 'beret': 1, 'two': 1, 'one': 1}) ==> 3 2
 Observe how each application of Counter(X) produces a dictionary-like object containing the number of occurrences of each value in X. Moreover, you can add two Counter() objects to combine their counts -- neat!
 
 Exercise 3 (2 points). Suppose you are given a list bags containing caption bags, and you want to know how many bags contain a given word. We'll call the number of bags that contain a given word that word's frequency. Write a function, count_freq(bags), that returns a Counter() object containing word frequencies for all words.
@@ -372,15 +402,16 @@ would produce
 Counter({'fish': 3, 'cat': 2, 'blue': 2, 'red': 2, 'dog': 2, 'hat': 1, 'one': 1, 'two': 1, 'beret': 1})
 There are two demo cells, below. The first one helps you debug; the second one runs your function to generate the word frequencies across all the actual caption bags. The test cell will check it, and subsequent exercises will use it.
 
+from collections import Counter
 def count_freq(bags):
-    ###
-    ### YOUR CODE HERE
-    ###
+    words = Counter(c for clist in bags for c in clist)
+    return words
 # Demo 0:
 bags = [{'cat', 'hat', 'fish', 'red', 'blue'},
         {'dog', 'beret', 'one', 'fish', 'two', 'red', 'blue'},
         {'dog', 'cat', 'fish'}]
 print(count_freq(bags))
+Counter({'fish': 3, 'cat': 2, 'blue': 2, 'red': 2, 'dog': 2, 'hat': 1, 'beret': 1, 'two': 1, 'one': 1})
 # Demo 1: Use your function on the caption bags!
 
 word_freq = count_freq(caption_bags)
@@ -390,6 +421,11 @@ print(word_freq.most_common(5))
 
 print("\nLeast frequent words:")
 print(word_freq.most_common()[-5::])
+Top 5 (word, frequency) pairs:
+[('sorry', 819), ('sir', 509), ('toast', 451), ('bread', 223), ('gluten', 193)]
+
+Least frequent words:
+[('allergies', 1), ('fancy', 1), ('odd', 1), ('millenials', 1), ('y', 1)]
 # Test cell: `ex3_count_words` (2 points)
 
 def ex3_gen_bag__(m, vocab, counts):
@@ -443,6 +479,7 @@ def ex3_check_bunch__(k):
 ex3_check_bunch__(10)
 
 print("\n(Passed!)")
+(Passed!)
 Scoring captions
 In the final part of this problem, let's try to identify "interesting" or "relevant" captions by assigning each one a score, using the bag-of-words model and the frequencies defined above.
 
@@ -469,6 +506,8 @@ def score_bag_common(bag, freq):
 K = Counter({'fish': 3, 'cat': 2, 'blue': 2, 'red': 2, 'dog': 2, 'hat': 1, 'one': 1, 'two': 1, 'beret': 1})
 print(score_bag_common({'blue', 'cat', 'fish'}, K))
 print(score_bag_common({'one', 'two', 'beret', 'hat', 'dog'}, K))
+7
+6
 Let's see what the "top 10 captions" are if we use this score, by running the code cell below.
 
 def score_all(bags, scoring_fun, freq):
@@ -486,6 +525,11 @@ def print_top_captions(scores, captions, max_rank=10):
         
 scores_common = score_all(caption_bags, score_bag_common, word_freq)
 print_top_captions(scores_common, captions_orig, max_rank=5)
+1 [2252.000]: '1440. I'm sorry sir, we cannot seat you until the rest of your party arrives. Without avocado, you're just toast.'
+2 [2134.000]: '1481. I'm sorry, sir, but this is a gluten-free restaurant. We don't serve bread.'
+3 [2099.000]: '1778. I'm very sorry, sir, but we only serve gluten free bread in this establishment.'
+4 [2094.000]: '808. I'm sorry, sir, but even being the toast of the town won't get you a table tonight.'
+5 [2061.000]: '134. I'm sorry sir, the only reservation I have under "Toast" checked in 15 minutes ago with a palate of butter and some strawberry jam.'
 Idea 1: Maximize "surprise." The captions above are all relevant, which is good, but they are also very similar. They lack the "surprise" that can make a caption funnier.
 
 So, a different idea is to reward rare words. Here is a simple implementation of this idea, and its results. It inverts the frequency of each word in the bag, and sums those.
@@ -495,6 +539,11 @@ def score_bag_rare(b, freq):
 
 scores_rare = score_all(caption_bags, score_bag_rare, word_freq)
 print_top_captions(scores_rare, captions_orig, max_rank=5)
+1 [9.372]: '1732. Party of one... Woah, I think I finally understand super-symmetry, the duality of infinity, and the entire universe... What? No, they're not putting LSD in the sauce or anything, in case that's what you were wondering, Mr. what did you say it was?'
+2 [8.746]: '1690. And now, to close the twenty-fourth annual meeting of the "Literalists Society", the dry crisp stylings of our Toastmaster Emeritus, Toasty McToast.'
+3 [8.658]: '2385. I'm sorry, this is a restaurant. We don't arrange “murder the homeless” Most Dangerous Game island getaways for sentient slices of bread. I can't begin to imagine why you thought I could do that for you.'
+4 [8.656]: '212. I would like to practice my speaking skills with a sad story about my family being roasted alive and eaten right in front of me.  I will try not to cry so I can avoid getting soggy and moldy.'
+5 [8.381]: '461. Okay, so here's how it's going to go. Forty-seven people will write captions that are some variant on the most obvious choice, and one of them -- perhaps at random -- will be chosen the "winner."  I'm sorry, I wish I had better news.'
 What the...? If you are like most people, you find these captions to be a bit too surprising. There are two issues:
 
 Using overly rare words appears to lead to irrelevant captions.
@@ -503,18 +552,19 @@ Exercise 4 (2 points). Let's try to implement a score that rewards a mix of comm
 
 In particular, here is what your colleague has suggested.
 
-Suppose a bag has m words.
-Suppose these m words have frequencies f=[f0,f1,…,fm−1].
-Let 1f≡[1f0,1f1,…,1fm−1] denote the inverse of these frequencies.
-From these, let s(f) be the score of the bag, defined using the following two-part formula:
+Suppose a bag has  m  words.
+Suppose these  m  words have frequencies  f=[f0,f1,…,fm−1] .
+Let  1f≡[1f0,1f1,…,1fm−1]  denote the inverse of these frequencies.
+From these, let  s(f)  be the score of the bag, defined using the following two-part formula:
 
 s(f)w(m)==pstdev(1f)⋅w(m)mμexp(−|m−μ|μ),
-where pstdev(1/f) is the (population) standard deviation of the inverse-frequencies, and μ is a constant. Note the use of an absolute value in the definition of w(m).
+ 
+where  pstdev(1/f)  is the (population) standard deviation of the inverse-frequencies, and  μ  is a constant. Note the use of an absolute value in the definition of  w(m) .
 
 Here is your colleague's reasoning.
 
 The standard deviation rewards bags that have highly variable frequencies, i.e., a diverse mix of rare and common words.
-The w(m) factor penalizes overly short or overly long sentences. It equals 1 when m=μ, which you can interpret as a "target" caption length. It is less than 1 for all other values. (The function exp(x) is ex, where e is the base of the natural logarithm.)
+The  w(m)  factor penalizes overly short or overly long sentences. It equals 1 when  m=μ , which you can interpret as a "target" caption length. It is less than 1 for all other values. (The function  exp(x)  is  ex , where  e  is the base of the natural logarithm.)
 Translate your colleague's formula into code, implementing it as score_bag_mixed(bag, freq, mu), below, where
 
 bag is the bag of a caption;
@@ -522,7 +572,7 @@ freq is a Counter() object, where freq[w] is the frequency of word w for any w i
 mu is the target caption length, whose default value is 5.
 Hint 0: The code cell imports a functions to compute the population standard deviation (statistics.pstdev) and exponential.
 
-Hint 1: The population standard deviation is only well-defined when computed on at least one value. So if therre are no values, then let pstdev(⋅)=0.
+Hint 1: The population standard deviation is only well-defined when computed on at least one value. So if therre are no values, then let  pstdev(⋅)=0 .
 
 from statistics import pstdev # https://docs.python.org/3/library/statistics.html#statistics.stdev
 from math import exp
