@@ -60,6 +60,7 @@ The returned list should preserve the exact names and orders of ingredients as t
 def get_ingredients(recipe):
     ###
     ### YOUR CODE HERE
+    return recipe['ingredients']
     ###
     
 # Demo:
@@ -124,6 +125,10 @@ def identity(x):  # a function that just returns the input
 def make_itemsets_apply(item_lists, extractor=identity):
     ###
     ### YOUR CODE HERE
+    ingredient_sets = list()
+    for recipe in recipes:
+        ingredient_sets.append(set(get_ingredients(recipe)))
+    return ingredient_sets
     ###
 # Demo of your function:
 def make_ingredient_sets(recipes):
