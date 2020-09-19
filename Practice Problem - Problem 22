@@ -123,13 +123,8 @@ def identity(x):  # a function that just returns the input
     return x
 
 def make_itemsets_apply(item_lists, extractor=identity):
-    ###
-    ### YOUR CODE HERE
-    ingredient_sets = list()
-    for recipe in recipes:
-        ingredient_sets.append(set(get_ingredients(recipe)))
-    return ingredient_sets
-    ###
+    return [set(extractor(item)) for item in item_lists]
+
 # Demo of your function:
 def make_ingredient_sets(recipes):
     return make_itemsets_apply(recipes, extractor=get_ingredients)
