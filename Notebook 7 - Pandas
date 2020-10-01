@@ -289,11 +289,11 @@ x	y	z	w
 3	mug	4	d	NaN
 === Right-join (D, E) ===
 x	y	z	w
-0	bug	1	d	e
-1	hug	-1	NaN	e
-2	smug	-2	NaN	e
-3	rug	-3	NaN	e
-4	tug	-4	NaN	e
+0	hug	-1	NaN	e
+1	smug	-2	NaN	e
+2	rug	-3	NaN	e
+3	tug	-4	NaN	e
+4	bug	1	d	e
 === Inner-join (D, E) ===
 x	y	z	w
 0	bug	1	d	e
@@ -381,13 +381,6 @@ finally:
     setattr(pd.DataFrame, 'apply', SAVE_APPLY)
 
 print("\n(Passed!)")
-country	year	cases	population
-0	Afghanistan	'99	745	19987071
-1	Brazil	'99	37737	172006362
-2	China	'99	212258	1272915272
-3	Afghanistan	'00	2666	20595360
-4	Brazil	'00	80488	174504898
-5	China	'00	213766	1280428583
 country	year	cases	population	prevalence
 0	Afghanistan	'99	745	19987071	0.000037
 1	Brazil	'99	37737	172006362	0.000219
@@ -396,13 +389,6 @@ country	year	cases	population	prevalence
 4	Brazil	'00	80488	174504898	0.000461
 5	China	'00	213766	1280428583	0.000167
 Prevalance values seem correct. But did you use `apply()?` Let's see...
-country	year	cases	population
-0	Afghanistan	'99	745	19987071
-1	Brazil	'99	37737	172006362
-2	China	'99	212258	1272915272
-3	Afghanistan	'00	2666	20595360
-4	Brazil	'00	80488	174504898
-5	China	'00	213766	1280428583
 You used `apply()`. You may have even used it as intended.
 
 (Passed!)
@@ -534,11 +520,12 @@ def tibbles_are_equivalent(A, B):
     """Given two tidy tables ('tibbles'), returns True iff they are
     equivalent.
     """
+    print(A)
     A_var_names = sorted(A.columns)
     AA = A[A_var_names].copy() #COLUMN ORDER
     AA.sort_values(by=A_var_names,inplace=True) #VALUE ORDER
-
-
+    
+    print(B)
     B_var_names = sorted(B.columns)
     BB = B[B_var_names].copy()
     BB.sort_values(by=B_var_names,inplace=True)
@@ -590,27 +577,49 @@ a	b	c
 2	z	3	bat
 3	w	4	rat
 === Tibble B == A ===
-a	c	b
-3	w	rat	4
-1	y	cat	2
-0	x	hat	1
-2	z	bat	3
+c	b	a
+0	hat	1	x
+1	cat	2	y
+3	rat	4	w
+2	bat	3	z
 === Tibble C != A ===
-a	c	b
+c	b	a
 0	x	1	hat
 1	y	2	cat
 2	z	3	bat
 3	w	4	rat
----------------------------------------------------------------------------
-AssertionError                            Traceback (most recent call last)
-<ipython-input-15-75265bf15912> in <module>
-     33 
-     34 assert tibbles_are_equivalent(A, B)
----> 35 assert not tibbles_are_equivalent(A, C)
-     36 assert not tibbles_are_equivalent(B, C)
-     37 
+   a  b    c
+0  x  1  hat
+1  y  2  cat
+2  z  3  bat
+3  w  4  rat
+     c  b  a
+0  hat  1  x
+1  cat  2  y
+3  rat  4  w
+2  bat  3  z
+   a  b    c
+0  x  1  hat
+1  y  2  cat
+2  z  3  bat
+3  w  4  rat
+   c  b    a
+0  x  1  hat
+1  y  2  cat
+2  z  3  bat
+3  w  4  rat
+     c  b  a
+0  hat  1  x
+1  cat  2  y
+3  rat  4  w
+2  bat  3  z
+   c  b    a
+0  x  1  hat
+1  y  2  cat
+2  z  3  bat
+3  w  4  rat
 
-AssertionError: 
+(Passed.)
 Basic tidying transformations: Melting and casting
 Given a data set and a target set of variables, there are at least two common issues that require tidying.
 
@@ -749,6 +758,21 @@ country	year	cases	population
 3	Brazil	2000	80488	174504898
 4	China	1999	212258	1272915272
 5	China	2000	213766	1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+
 (Passed.)
 Casting
 The second most common issue is that an observation might be split across multiple rows. Table 2 is an example. To tidy up, you want to merge rows:
@@ -842,6 +866,21 @@ country	year	cases	population
 3	Brazil	2000	80488	174504898
 4	China	1999	212258	1272915272
 5	China	2000	213766	1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+
 (Passed.)
 Separating variables
 Consider the following table.
@@ -862,6 +901,8 @@ Exercise 7A (3 points). Write a function that takes a data frame (df) and separa
 How will the separation happen? The caller should provide a function, splitter(x), that given a value returns a list containing the components. Observe that the partial solution below defines a default splitter, which uses the regular expression, (\d+\.?\d+), to find all integer or floating-point values in a string input x.
 
 import re
+
+
 
 def default_splitter(text):
     """Searches the given spring for all integer and floating-point
@@ -892,24 +933,6 @@ def separate(df, key, into, splitter=default_splitter):
     tibble = df[fixed_vars].copy()
     tibble_extra = df[key].apply(apply_splitter)
     return pd.concat([tibble,tibble_extra], axis=1)
-
-display(table3)
-tibble3 = separate(table3, key='rate', into=['cases', 'population'])
-display(tibble3)
-country	year	rate
-0	Afghanistan	1999	745/19987071
-1	Afghanistan	2000	2666/20595360
-2	Brazil	1999	37737/172006362
-3	Brazil	2000	80488/174504898
-4	China	1999	212258/1272915272
-5	China	2000	213766/1280428583
-country	year	cases	population
-0	Afghanistan	1999	745	19987071
-1	Afghanistan	2000	2666	20595360
-2	Brazil	1999	37737	172006362
-3	Brazil	2000	80488	174504898
-4	China	1999	212258	1272915272
-5	China	2000	213766	1280428583
 # Test: `separate_test`
 
 print("=== Recall: table3 ===")
@@ -936,24 +959,6 @@ country	year	rate
 3	Brazil	2000	80488/174504898
 4	China	1999	212258/1272915272
 5	China	2000	213766/1280428583
-745/19987071
-Fields ['745', '19987071']
-cases              745
-population    19987071
-dtype: object
-745/19987071
-Fields ['745', '19987071']
-2666/20595360
-Fields ['2666', '20595360']
-37737/172006362
-Fields ['37737', '172006362']
-80488/174504898
-Fields ['80488', '174504898']
-212258/1272915272
-Fields ['212258', '1272915272']
-213766/1280428583
-Fields ['213766', '1280428583']
-
 === tibble3 = separate (table3, ...) ===
 country	year	cases	population
 0	Afghanistan	1999	745	19987071
@@ -962,73 +967,47 @@ country	year	cases	population
 3	Brazil	2000	80488	174504898
 4	China	1999	212258	1272915272
 5	China	2000	213766	1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+       country  year   cases  population
+0  Afghanistan  1999     745    19987071
+1  Afghanistan  2000    2666    20595360
+2       Brazil  1999   37737   172006362
+3       Brazil  2000   80488   174504898
+4        China  1999  212258  1272915272
+5        China  2000  213766  1280428583
+
 (Passed.)
 Exercise 7B (2 points). Implement the inverse of separate, which is unite. This function should take a data frame (df), the set of columns to combine (cols), the name of the new column (new_var), and a function that takes the subset of the cols variables from a single observation. It should return a new value for that observation.
 
 def str_join_elements(x, sep=""):
     assert type(sep) is str
-    print("Va", x)
     return sep.join([str(xi) for xi in x])
 
 def unite(df, cols, new_var, combine=str_join_elements):
     fixed_vars = df.columns.difference(cols)
-    print(df[cols])
     for i in range(len(df)):
-#         print(df.loc[i, ['cases','population']])
-        print(cols)
-        df[new_var] = df.apply(combine(df.loc[i,cols]))
+        df.loc[i,new_var] = combine(df.loc[i,cols])    
+    return df[['country', 'year', 'rate']]
+
 tibble_again = unite(tibble3, ['cases','population'], 'rate', combine=lambda x:str_join_elements(x, "/"))
-display(tibble3) 
+display(tibble_again) 
 display(table3)
-    cases  population
-0     745    19987071
-1    2666    20595360
-2   37737   172006362
-3   80488   174504898
-4  212258  1272915272
-5  213766  1280428583
-['cases', 'population']
-Va cases              745
-population    19987071
-Name: 0, dtype: object
 ---------------------------------------------------------------------------
-AttributeError                            Traceback (most recent call last)
-<ipython-input-57-ff045786968b> in <module>
-     11         print(cols)
-     12         df[new_var] = df.apply(combine(df.loc[i,cols]))
----> 13 tibble_again = unite(tibble3, ['cases','population'], 'rate', combine=lambda x:str_join_elements(x, "/"))
-     14 display(tibble3)
-     15 display(table3)
+NameError                                 Traceback (most recent call last)
+<ipython-input-24-c1579502e611> in <module>
+      9     return df[['country', 'year', 'rate']]
+     10 
+---> 11 tibble_again = unite(tibble3, ['cases','population'], 'rate', combine=lambda x:str_join_elements(x, "/"))
+     12 display(tibble_again)
+     13 display(table3)
 
-<ipython-input-57-ff045786968b> in unite(df, cols, new_var, combine)
-     10 #         print(df.loc[i, ['cases','population']])
-     11         print(cols)
----> 12         df[new_var] = df.apply(combine(df.loc[i,cols]))
-     13 tibble_again = unite(tibble3, ['cases','population'], 'rate', combine=lambda x:str_join_elements(x, "/"))
-     14 display(tibble3)
-
-/usr/lib/python3.7/site-packages/pandas/core/frame.py in apply(self, func, axis, raw, result_type, args, **kwds)
-   6876             kwds=kwds,
-   6877         )
--> 6878         return op.get_result()
-   6879 
-   6880     def applymap(self, func) -> "DataFrame":
-
-/usr/lib/python3.7/site-packages/pandas/core/apply.py in get_result(self)
-    158             # Some methods (shift, etc.) require the axis argument, others
-    159             # don't, so inspect and insert if necessary.
---> 160             func = getattr(self.obj, self.f)
-    161             sig = inspect.getfullargspec(func)
-    162             if "axis" in sig.args:
-
-/usr/lib/python3.7/site-packages/pandas/core/generic.py in __getattr__(self, name)
-   5272             if self._info_axis._can_hold_identifiers_and_holds_name(name):
-   5273                 return self[name]
--> 5274             return object.__getattribute__(self, name)
-   5275 
-   5276     def __setattr__(self, name: str, value) -> None:
-
-AttributeError: 'DataFrame' object has no attribute '745/19987071'
+NameError: name 'tibble3' is not defined
 # Test: `unite_test`
 
 table3_again = unite(tibble3, ['cases', 'population'], 'rate',
@@ -1037,6 +1016,29 @@ display(table3_again)
 assert tibbles_are_equivalent(table3, table3_again)
 
 print("\n(Passed.)")
+country	year	rate
+0	Afghanistan	1999	745/19987071
+1	Afghanistan	2000	2666/20595360
+2	Brazil	1999	37737/172006362
+3	Brazil	2000	80488/174504898
+4	China	1999	212258/1272915272
+5	China	2000	213766/1280428583
+       country  year               rate
+0  Afghanistan  1999       745/19987071
+1  Afghanistan  2000      2666/20595360
+2       Brazil  1999    37737/172006362
+3       Brazil  2000    80488/174504898
+4        China  1999  212258/1272915272
+5        China  2000  213766/1280428583
+       country  year               rate
+0  Afghanistan  1999       745/19987071
+1  Afghanistan  2000      2666/20595360
+2       Brazil  1999    37737/172006362
+3       Brazil  2000    80488/174504898
+4        China  1999  212258/1272915272
+5        China  2000  213766/1280428583
+
+(Passed.)
 Putting it all together
 Let's use primitives to tidy up the original WHO TB data set. First, here is the raw data.
 
@@ -1050,6 +1052,33 @@ print("\n=== A few randomly selected rows ===")
 import random
 row_sample = sorted(random.sample(range(len(who_raw)), 5))
 display(who_raw.iloc[row_sample])
+=== WHO TB data set: 7240 rows x 60 columns ===
+Column names: Index(['country', 'iso2', 'iso3', 'year', 'new_sp_m014', 'new_sp_m1524',
+       'new_sp_m2534', 'new_sp_m3544', 'new_sp_m4554', 'new_sp_m5564',
+       'new_sp_m65', 'new_sp_f014', 'new_sp_f1524', 'new_sp_f2534',
+       'new_sp_f3544', 'new_sp_f4554', 'new_sp_f5564', 'new_sp_f65',
+       'new_sn_m014', 'new_sn_m1524', 'new_sn_m2534', 'new_sn_m3544',
+       'new_sn_m4554', 'new_sn_m5564', 'new_sn_m65', 'new_sn_f014',
+       'new_sn_f1524', 'new_sn_f2534', 'new_sn_f3544', 'new_sn_f4554',
+       'new_sn_f5564', 'new_sn_f65', 'new_ep_m014', 'new_ep_m1524',
+       'new_ep_m2534', 'new_ep_m3544', 'new_ep_m4554', 'new_ep_m5564',
+       'new_ep_m65', 'new_ep_f014', 'new_ep_f1524', 'new_ep_f2534',
+       'new_ep_f3544', 'new_ep_f4554', 'new_ep_f5564', 'new_ep_f65',
+       'newrel_m014', 'newrel_m1524', 'newrel_m2534', 'newrel_m3544',
+       'newrel_m4554', 'newrel_m5564', 'newrel_m65', 'newrel_f014',
+       'newrel_f1524', 'newrel_f2534', 'newrel_f3544', 'newrel_f4554',
+       'newrel_f5564', 'newrel_f65'],
+      dtype='object')
+
+=== A few randomly selected rows ===
+country	iso2	iso3	year	new_sp_m014	new_sp_m1524	new_sp_m2534	new_sp_m3544	new_sp_m4554	new_sp_m5564	...	newrel_m4554	newrel_m5564	newrel_m65	newrel_f014	newrel_f1524	newrel_f2534	newrel_f3544	newrel_f4554	newrel_f5564	newrel_f65
+1911	Democratic Republic of the Congo	CD	COD	2013	NaN	NaN	NaN	NaN	NaN	NaN	...	6587.0	3841.0	2016.0	1706.0	6376.0	8352.0	6472.0	4402.0	2551.0	1263.0
+2036	Dominican Republic	DO	DOM	2002	39.0	295.0	417.0	270.0	145.0	86.0	...	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+2504	Georgia	GE	GEO	1994	NaN	NaN	NaN	NaN	NaN	NaN	...	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+3159	Ireland	IE	IRL	2003	0.0	10.0	11.0	13.0	14.0	7.0	...	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+6469	Trinidad and Tobago	TT	TTO	1991	NaN	NaN	NaN	NaN	NaN	NaN	...	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN	NaN
+5 rows × 60 columns
+
 The data set has 7,240 rows and 60 columns. Here is how to decode the columns.
 
 Columns 'country', 'iso2', and 'iso3' are different ways to designate the country and redundant, meaning you only really need to keep one of them.
@@ -1067,11 +1096,34 @@ Remove the iso2 and iso3 columns, since they are redundant with country (which y
 Keep the year column as a variable.
 Remove all not-a-number (NaN) counts. Hint: You can test for a NaN using Python's math.isnan().
 Convert the counts to integers. (Because of the presence of NaNs, the counts will be otherwise be treated as floating-point values, which is undesirable since you do not expect to see non-integer counts.)
+def tibbles_are_equivalent(A, B):
+    """Given two tidy tables ('tibbles'), returns True iff they are
+    equivalent.
+    """
+    print(A)
+    A_var_names = sorted(A.columns)
+    AA = A[A_var_names].copy() #COLUMN ORDER
+    AA.sort_values(by=A_var_names,inplace=True) #VALUE ORDER
+    
+    print(B)
+    B_var_names = sorted(B.columns)
+    BB = B[B_var_names].copy()
+    BB.sort_values(by=B_var_names,inplace=True)
+    
+
+    return AA.equals(BB)
+
+
 from math import isnan
 
-###
-### YOUR CODE HERE
-###
+col_vals = who_raw.columns.difference(['country','iso2','iso3','year'])
+who2 = melt(who_raw,col_vals,'case_type','count')
+del who2['iso2']
+del who2['iso3']
+who2 = who2[who2['count'].apply(lambda x: not isnan(x))]
+who2['count'] = who2['count'].astype(int)
+who2.sort_index(axis=0, ascending=True)
+
 # Test: `who2_test`
 
 print("=== First few rows of your solution ===")
@@ -1084,6 +1136,146 @@ display(who2_soln.head())
 # Check it
 assert tibbles_are_equivalent(who2, who2_soln)
 print ("\n(Passed.)")
+/usr/lib/python3.7/site-packages/ipykernel_launcher.py:7: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  import sys
+/usr/lib/python3.7/site-packages/ipykernel_launcher.py:8: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  
+          country iso2 iso3  year     case_type   count
+0     Afghanistan   AF  AFG  1980   new_ep_f014     NaN
+4     Afghanistan   AF  AFG  1984  new_sp_f1524     NaN
+5     Afghanistan   AF  AFG  1985  new_sp_f1524     NaN
+6     Afghanistan   AF  AFG  1986  new_sp_f1524     NaN
+7     Afghanistan   AF  AFG  1987  new_sp_f1524     NaN
+...           ...  ...  ...   ...           ...     ...
+7233     Zimbabwe   ZW  ZWE  2007  new_sp_m1524   500.0
+7234     Zimbabwe   ZW  ZWE  2008  new_sp_m1524   614.0
+7235     Zimbabwe   ZW  ZWE  2009  new_sp_m1524   578.0
+7223     Zimbabwe   ZW  ZWE  1997  new_sp_m1524     NaN
+7239     Zimbabwe   ZW  ZWE  2013    newrel_m65  1208.0
+
+[405440 rows x 6 columns]
+=== First few rows of your solution ===
+country	year	case_type	count
+17	Afghanistan	1997	new_sp_f1524	38
+18	Afghanistan	1998	new_sp_f1524	350
+19	Afghanistan	1999	new_sp_f1524	139
+20	Afghanistan	2000	new_sp_f1524	414
+21	Afghanistan	2001	new_sp_f1524	799
+=== First few rows of the instructor's solution ===
+country	year	case_type	count
+0	Albania	2006	new_ep_f014	7
+1	Albania	2007	new_ep_f014	1
+2	Albania	2008	new_ep_f014	3
+3	Albania	2009	new_ep_f014	2
+4	Albania	2010	new_ep_f014	2
+          country  year     case_type  count
+17    Afghanistan  1997  new_sp_f1524     38
+18    Afghanistan  1998  new_sp_f1524    350
+19    Afghanistan  1999  new_sp_f1524    139
+20    Afghanistan  2000  new_sp_f1524    414
+21    Afghanistan  2001  new_sp_f1524    799
+...           ...   ...           ...    ...
+7232     Zimbabwe  2006  new_sp_m1524    736
+7233     Zimbabwe  2007  new_sp_m1524    500
+7234     Zimbabwe  2008  new_sp_m1524    614
+7235     Zimbabwe  2009  new_sp_m1524    578
+7239     Zimbabwe  2013    newrel_m65   1208
+
+[76046 rows x 4 columns]
+                                  country  year    case_type  count
+0                                 Albania  2006  new_ep_f014      7
+1                                 Albania  2007  new_ep_f014      1
+2                                 Albania  2008  new_ep_f014      3
+3                                 Albania  2009  new_ep_f014      2
+4                                 Albania  2010  new_ep_f014      2
+...                                   ...   ...          ...    ...
+76041  Venezuela (Bolivarian Republic of)  2013   newrel_m65    523
+76042                            Viet Nam  2013   newrel_m65   5834
+76043                               Yemen  2013   newrel_m65    446
+76044                              Zambia  2013   newrel_m65   1112
+76045                            Zimbabwe  2013   newrel_m65   1208
+
+[76046 rows x 4 columns]
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-26-95fb96accb0a> in <module>
+     37 
+     38 # Check it
+---> 39 assert tibbles_are_equivalent(who2, who2_soln)
+     40 print ("\n(Passed.)")
+
+AssertionError: 
+# Test: `who2_test`
+
+print("=== First few rows of your solution ===")
+display(who2.head())
+
+print ("=== First few rows of the instructor's solution ===")
+who2_soln = pd.read_csv(local_data['who2_soln.csv'])
+display(who2_soln.head())
+
+# Check it
+assert tibbles_are_equivalent(who2, who2_soln)
+print ("\n(Passed.)")
+=== First few rows of your solution ===
+country	year	case_type	count
+17	Afghanistan	1997	new_sp_f1524	38
+18	Afghanistan	1998	new_sp_f1524	350
+19	Afghanistan	1999	new_sp_f1524	139
+20	Afghanistan	2000	new_sp_f1524	414
+21	Afghanistan	2001	new_sp_f1524	799
+=== First few rows of the instructor's solution ===
+country	year	case_type	count
+0	Albania	2006	new_ep_f014	7
+1	Albania	2007	new_ep_f014	1
+2	Albania	2008	new_ep_f014	3
+3	Albania	2009	new_ep_f014	2
+4	Albania	2010	new_ep_f014	2
+          country  year     case_type  count
+17    Afghanistan  1997  new_sp_f1524     38
+18    Afghanistan  1998  new_sp_f1524    350
+19    Afghanistan  1999  new_sp_f1524    139
+20    Afghanistan  2000  new_sp_f1524    414
+21    Afghanistan  2001  new_sp_f1524    799
+...           ...   ...           ...    ...
+7232     Zimbabwe  2006  new_sp_m1524    736
+7233     Zimbabwe  2007  new_sp_m1524    500
+7234     Zimbabwe  2008  new_sp_m1524    614
+7235     Zimbabwe  2009  new_sp_m1524    578
+7239     Zimbabwe  2013    newrel_m65   1208
+
+[76046 rows x 4 columns]
+                                  country  year    case_type  count
+0                                 Albania  2006  new_ep_f014      7
+1                                 Albania  2007  new_ep_f014      1
+2                                 Albania  2008  new_ep_f014      3
+3                                 Albania  2009  new_ep_f014      2
+4                                 Albania  2010  new_ep_f014      2
+...                                   ...   ...          ...    ...
+76041  Venezuela (Bolivarian Republic of)  2013   newrel_m65    523
+76042                            Viet Nam  2013   newrel_m65   5834
+76043                               Yemen  2013   newrel_m65    446
+76044                              Zambia  2013   newrel_m65   1112
+76045                            Zimbabwe  2013   newrel_m65   1208
+
+[76046 rows x 4 columns]
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-36-3ef7469cc614> in <module>
+      9 
+     10 # Check it
+---> 11 assert tibbles_are_equivalent(who2, who2_soln)
+     12 print ("\n(Passed.)")
+
+AssertionError: 
 Exercise 9 (5 points). Starting from your who2 data frame, create a new tibble, who3, for which each 'key' value is split into three new variables:
 
 'type', to hold the TB type, having possible values of rel, ep, sn, and sp;
@@ -1091,9 +1283,69 @@ Exercise 9 (5 points). Starting from your who2 data frame, create a new tibble, 
 'age_group', to hold the age group as a string having possible values of 0-14, 15-24, 25-34, 35-44, 45-54, 55-64, and 65+.
 The input data file is large enough that your solution might take a minute to run. But if it appears to be taking much more than that, you may want to revisit your approach.
 
-###
-### YOUR CODE HERE
-###
+import re
+
+def tibbles_are_equivalent(A, B):
+    """Given two tidy tables ('tibbles'), returns True iff they are
+    equivalent.
+    """
+    print(A)
+    A_var_names = sorted(A.columns)
+    AA = A[A_var_names].copy() #COLUMN ORDER
+    AA.sort_values(by=A_var_names,inplace=True) #VALUE ORDER
+    
+    print(B)
+    B_var_names = sorted(B.columns)
+    BB = B[B_var_names].copy()
+    BB.sort_values(by=B_var_names,inplace=True)
+    
+
+    return AA.equals(BB)
+
+
+def who_splitter(text):
+    
+    m = re.match("^new_?(rel|ep|sn|sp)_(f|m)(\d{2,4})$",text)
+    
+    if m is None or len(m.groups()) !=3:
+        return('','','')
+    fields = list(m.groups())
+   
+    if fields[1] == 'f':
+        fields[1] = 'female'
+    elif fields[1] == 'm':
+        fields[1] = 'male'
+    
+    if fields[2] == '014':
+        fields[2] = '0-14'
+    elif fields[2] == '65':
+        fields[2] = '65+'
+    elif len(fields[2]) ==4 and fields[2].isdigit():
+        fields[2] = fields[2][0:2] + '-' + fields[2][2:4]
+    return fields[2],fields[1],fields[0]
+
+def separate(df, key, into, splitter=default_splitter):
+    """Given a data frame, separates one of its columns, the key,
+    into new variables.
+    """
+    
+    assert type(df) is pd.DataFrame
+    assert key in df.columns
+    
+    # Hint: http://stackoverflow.com/questions/16236684/apply-pandas-function-to-column-to-create-multiple-new-columns
+    
+    def apply_splitter(text):
+        fields = who_splitter(text)
+        return pd.Series({into[i]:f for i,f in enumerate(fields)})
+    fixed_vars = df.columns.difference([key])
+    tibble = df[fixed_vars].copy()
+    
+    tibble_extra = df[key].apply(apply_splitter)
+    return pd.concat([tibble,tibble_extra], axis=1)
+
+
+who3 = separate(who2_soln[:20], key='case_type', into= ['age_group', 'gender', 'type'])
+
 # Test: `who3_test`
 
 print("=== First few rows of your solution ===")
@@ -1105,4 +1357,131 @@ display(who3_soln.head())
 
 assert tibbles_are_equivalent(who3, who3_soln)
 print("\n(Passed.)")
+=== First few rows of your solution ===
+count	country	year	age_group	gender	type
+0	7	Albania	2006	0-14	female	ep
+1	1	Albania	2007	0-14	female	ep
+2	3	Albania	2008	0-14	female	ep
+3	2	Albania	2009	0-14	female	ep
+4	2	Albania	2010	0-14	female	ep
+=== First few rows of the instructor's solution ===
+count	country	year	age_group	gender	type
+0	7	Albania	2006	0-14	female	ep
+1	1	Albania	2007	0-14	female	ep
+2	3	Albania	2008	0-14	female	ep
+3	2	Albania	2009	0-14	female	ep
+4	2	Albania	2010	0-14	female	ep
+    count         country  year age_group  gender type
+0       7         Albania  2006      0-14  female   ep
+1       1         Albania  2007      0-14  female   ep
+2       3         Albania  2008      0-14  female   ep
+3       2         Albania  2009      0-14  female   ep
+4       2         Albania  2010      0-14  female   ep
+5       3         Albania  2011      0-14  female   ep
+6       1         Albania  2012      0-14  female   ep
+7       0  American Samoa  2008      0-14  female   ep
+8       0  American Samoa  2009      0-14  female   ep
+9       0  American Samoa  2010      0-14  female   ep
+10      0         Andorra  2006      0-14  female   ep
+11      0         Andorra  2008      0-14  female   ep
+12      0         Andorra  2009      0-14  female   ep
+13      0         Andorra  2010      0-14  female   ep
+14      0         Andorra  2011      0-14  female   ep
+15      0         Andorra  2012      0-14  female   ep
+16     64          Angola  2011      0-14  female   ep
+17      0        Anguilla  2010      0-14  female   ep
+18      0        Anguilla  2011      0-14  female   ep
+19      0        Anguilla  2012      0-14  female   ep
+       count                             country  year age_group  gender type
+0          7                             Albania  2006      0-14  female   ep
+1          1                             Albania  2007      0-14  female   ep
+2          3                             Albania  2008      0-14  female   ep
+3          2                             Albania  2009      0-14  female   ep
+4          2                             Albania  2010      0-14  female   ep
+...      ...                                 ...   ...       ...     ...  ...
+76041    523  Venezuela (Bolivarian Republic of)  2013       65+    male  rel
+76042   5834                            Viet Nam  2013       65+    male  rel
+76043    446                               Yemen  2013       65+    male  rel
+76044   1112                              Zambia  2013       65+    male  rel
+76045   1208                            Zimbabwe  2013       65+    male  rel
+
+[76046 rows x 6 columns]
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-27-6c68b2290063> in <module>
+     71 display(who3_soln.head())
+     72 
+---> 73 assert tibbles_are_equivalent(who3, who3_soln)
+     74 print("\n(Passed.)")
+
+AssertionError: 
+# Test: `who3_test`
+
+print("=== First few rows of your solution ===")
+display(who3.head())
+
+who3_soln = pd.read_csv(local_data['who3_soln.csv'])
+print("\n=== First few rows of the instructor's solution ===")
+display(who3_soln.head())
+
+assert tibbles_are_equivalent(who3, who3_soln)
+print("\n(Passed.)")
+=== First few rows of your solution ===
+count	country	year	age_group	gender	type
+0	7	Albania	2006	0-14	female	ep
+1	1	Albania	2007	0-14	female	ep
+2	3	Albania	2008	0-14	female	ep
+3	2	Albania	2009	0-14	female	ep
+4	2	Albania	2010	0-14	female	ep
+=== First few rows of the instructor's solution ===
+count	country	year	age_group	gender	type
+0	7	Albania	2006	0-14	female	ep
+1	1	Albania	2007	0-14	female	ep
+2	3	Albania	2008	0-14	female	ep
+3	2	Albania	2009	0-14	female	ep
+4	2	Albania	2010	0-14	female	ep
+    count         country  year age_group  gender type
+0       7         Albania  2006      0-14  female   ep
+1       1         Albania  2007      0-14  female   ep
+2       3         Albania  2008      0-14  female   ep
+3       2         Albania  2009      0-14  female   ep
+4       2         Albania  2010      0-14  female   ep
+5       3         Albania  2011      0-14  female   ep
+6       1         Albania  2012      0-14  female   ep
+7       0  American Samoa  2008      0-14  female   ep
+8       0  American Samoa  2009      0-14  female   ep
+9       0  American Samoa  2010      0-14  female   ep
+10      0         Andorra  2006      0-14  female   ep
+11      0         Andorra  2008      0-14  female   ep
+12      0         Andorra  2009      0-14  female   ep
+13      0         Andorra  2010      0-14  female   ep
+14      0         Andorra  2011      0-14  female   ep
+15      0         Andorra  2012      0-14  female   ep
+16     64          Angola  2011      0-14  female   ep
+17      0        Anguilla  2010      0-14  female   ep
+18      0        Anguilla  2011      0-14  female   ep
+19      0        Anguilla  2012      0-14  female   ep
+       count                             country  year age_group  gender type
+0          7                             Albania  2006      0-14  female   ep
+1          1                             Albania  2007      0-14  female   ep
+2          3                             Albania  2008      0-14  female   ep
+3          2                             Albania  2009      0-14  female   ep
+4          2                             Albania  2010      0-14  female   ep
+...      ...                                 ...   ...       ...     ...  ...
+76041    523  Venezuela (Bolivarian Republic of)  2013       65+    male  rel
+76042   5834                            Viet Nam  2013       65+    male  rel
+76043    446                               Yemen  2013       65+    male  rel
+76044   1112                              Zambia  2013       65+    male  rel
+76045   1208                            Zimbabwe  2013       65+    male  rel
+
+[76046 rows x 6 columns]
+---------------------------------------------------------------------------
+AssertionError                            Traceback (most recent call last)
+<ipython-input-31-f17e085e19cf> in <module>
+      8 display(who3_soln.head())
+      9 
+---> 10 assert tibbles_are_equivalent(who3, who3_soln)
+     11 print("\n(Passed.)")
+
+AssertionError: 
 Fin! That's the end of this assignment. Don't forget to restart and run this notebook from the beginning to verify that it works top-to-bottom before submitting.
